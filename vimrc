@@ -111,5 +111,14 @@ set wildmode=list:longest,full
 " set dir to directory of current file
 autocmd BufEnter * silent! lcd %:p:h
 
+
+command! -bar -nargs=1 DoPod %!perldoc -t <args>
+
+command! -bar -nargs=1 Pod
+\   new
+\|  DoPod <args>
+\|  set syntax=pod
+\|  goto 1
+\|  set buftype=nofile
 "Remap K to lookup perldoc
-autocmd FileType perl noremap K :!perldoc <cword><bar><bar> perldoc -f <cword><cr>
+autocmd FileType perl noremap K :Pod <C-R><C-W><CR>
