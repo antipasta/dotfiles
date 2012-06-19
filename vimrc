@@ -108,3 +108,6 @@ map <Leader>( gewi(<Esc>ea)<Esc>
 "Remap K to lookup perldoc
 noremap K :!perldoc <cword><bar><bar> perldoc -f <cword><cr>
 set wildmode=list:longest,full
+
+" set dir to directory of current file
+autocmd BufEnter * silent! lcd %:p:h
