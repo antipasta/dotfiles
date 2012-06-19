@@ -60,6 +60,7 @@ autocmd FileType make set noexpandtab
 let perl_include_pod = 1
 autocmd FileType set equalprg&
 
+
 " syntax color complex things like @{${"foo"}}
 let perl_extended_vars = 1
 set mouse=a
@@ -105,9 +106,10 @@ map <Leader>' gewi'<Esc>ea'<Esc>
 map <Leader>" gewi"<Esc>ea"<Esc>
 map <Leader>( gewi(<Esc>ea)<Esc>
 
-"Remap K to lookup perldoc
-noremap K :!perldoc <cword><bar><bar> perldoc -f <cword><cr>
 set wildmode=list:longest,full
 
 " set dir to directory of current file
 autocmd BufEnter * silent! lcd %:p:h
+
+"Remap K to lookup perldoc
+autocmd FileType perl noremap K :!perldoc <cword><bar><bar> perldoc -f <cword><cr>
