@@ -16,25 +16,16 @@ set noswapfile
 set backup
 set backupdir=/~/.vim/backup
 set directory=/~/.vim/tmp
-map <F12> <C-W>_
-map <F11> 25<C-W>_
  set matchpairs+=<:>
-map <F6> mzggVG='z
 map <C-k> :tabnext<CR>
 map <C-j> :tabprev<CR>
 vmap  / y/<C-R>=substitute(escape(@", '\\/.*$^~[]'), "\n", "\\\\n", "g")<CR><CR>
-vmap <F5> y :!cpanm -v <C-r>"<CR>
-vmap <F4> y :new \| :0read !perldoc -t <C-r>"<CR>:set syntax=pod<CR>:set buftype=nofile<CR>gg
-map <F4> :new \| :0read !perl -Ilib -MO=Deparse,-p #<CR>:set syntax=perl<CR>:set buftype=nofile<CR>gg
-vmap <F3> y :new \| :0read !perldoc -m <C-r>"<CR>:set syntax=perl<CR>:set buftype=nofile<CR>:file <C-r>" <CR>gg
 set wildmenu
-imap <C-\.> <C-n>
 map ,/ :s/^/\/\//<CR> <Esc>:noh<CR>
 map ./ :s/^\/\///<CR> <Esc>:noh<CR>
 map ,# :s/^/#/<CR> <Esc>:noh<CR>
 map .# :s/^#//<CR> <Esc>:noh<CR>
 " map <C-J> <C-W>x<C-W><Down>
-map <F9> :. s/title="\([^"]\+\)"/[% tooltip("\1") %]/g<CR>:. s/class="tooltip"//g<CR>/tooltip<CR>
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -113,3 +104,7 @@ map <Leader>{ gewi{<Esc>ea}<Esc>
 map <Leader>' gewi'<Esc>ea'<Esc>
 map <Leader>" gewi"<Esc>ea"<Esc>
 map <Leader>( gewi(<Esc>ea)<Esc>
+
+"Remap K to lookup perldoc
+noremap K :!perldoc <cword><bar><bar> perldoc -f <cword><cr>
+set wildmode=list:longest,full
