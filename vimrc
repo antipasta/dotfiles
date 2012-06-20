@@ -122,3 +122,6 @@ command! -bar -nargs=1 Pod
 \|  set buftype=nofile
 "Remap K to lookup perldoc
 autocmd FileType perl noremap K :Pod <C-R><C-W><CR>
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
