@@ -1,15 +1,23 @@
 set history=100         " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
-set smartindent
 set bs=2                " allow backspacing over everything in insert mode
 set hlsearch
-" set nohls " hlsearch if want highlighting
 syntax on
 set winminheight=0
 set incsearch
-set smartindent
 set magic
+set ignorecase
+set smartcase
+set ttyfast
+set fileencodings=utf-8
+set encoding=utf-8 
+set enc=utf-8
+set fencs=utf-8
+set wildmenu
+set tabstop=4
+set shiftwidth=4
+set expandtab
 "set nobackup
 "set nowritebackup
 set noswapfile
@@ -17,22 +25,17 @@ set backup
 set backupdir=/~/.vim/backup
 set directory=/~/.vim/tmp
  set matchpairs+=<:>
+set visualbell           " don't beep
+set noerrorbells         " don't beep
 map <C-k> :tabnext<CR>
 map <C-j> :tabprev<CR>
-vmap  / y/<C-R>=substitute(escape(@", '\\/.*$^~[]'), "\n", "\\\\n", "g")<CR><CR>
-set wildmenu
 map ,/ :s/^/\/\//<CR> <Esc>:noh<CR>
 map ./ :s/^\/\///<CR> <Esc>:noh<CR>
 map ,# :s/^/#/<CR> <Esc>:noh<CR>
-map .# :s/^#//<CR> <Esc>:noh<CR>
-" map <C-J> <C-W>x<C-W><Down>
-set tabstop=4
-set shiftwidth=4
-set expandtab
+map .# :s/^\(\s*\)#\+<CR> <Esc>:noh<CR>
 autocmd BufRead *.as set filetype=java
 autocmd BufRead *.tt set filetype=php
 set dir=~/.vim/swp
-" set t_Co=256
 colors elflord
     "colorscheme oceanblack 
     "colors darkblue
@@ -40,14 +43,9 @@ colors elflord
     "colorscheme symfony 
     "colorscheme clouds-midnight 
     "colorscheme wombat256  
-set ttyfast
-set fileencodings=utf-8
-set encoding=utf-8 
-set enc=utf-8
-set fencs=utf-8
-" show matching brackets
 autocmd FileType perl set showmatch
-
+filetype plugin indent on
+syntax enable
 
 " check perl code with :make
 autocmd FileType perl set makeprg=perl\ -Ilib\ -c\ %\ $*
@@ -58,7 +56,6 @@ autocmd FileType perl set equalprg=perltidy
 autocmd FileType javascript set equalprg=js_beautify.pl\ -
 autocmd FileType make set noexpandtab
 let perl_include_pod = 1
-autocmd FileType set equalprg&
 
 
 " syntax color complex things like @{${"foo"}}
@@ -77,8 +74,8 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 
 "turn on magic for regexes, so i dont have to use vi's weird formatting for them
-nnoremap / /\v
-vnoremap / /\v
+"nnoremap / /\v
+"vnoremap / /\v
 
 "yank/paste to a buffer file for pasting between separate vi instances
 vmap <Leader>y :w! ~/.vimbuffer<CR> 
@@ -91,13 +88,11 @@ map .$ :s/\s\+$//<CR> <Esc>:noh<CR>
 "shortcut for quoting and comma separating items
 vmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
 nmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
-set visualbell           " don't beep
-set noerrorbells         " don't beep
 set pastetoggle=<Leader>1
 nnoremap ; : 
 
 " w!! will save file with sudo
-cmap w!! w !sudo tee % >/dev/null
+cabbrev w!! w !sudo tee % >/dev/null
 
 " changed to use leader from sam's version
 map <Leader>[ gewi[<Esc>ea]<Esc>
