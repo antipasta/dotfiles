@@ -102,7 +102,7 @@ map <Leader>" gewi"<Esc>ea"<Esc>
 map <Leader>( gewi(<Esc>ea)<Esc>
 
 set wildmode=list:longest,full
-
+set scrolloff=5
 " set dir to directory of current file
 autocmd BufEnter * silent! lcd %:p:h
 
