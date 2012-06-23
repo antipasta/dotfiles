@@ -44,6 +44,9 @@ colors elflord
     "colorscheme clouds-midnight 
     "colorscheme wombat256  
 autocmd FileType perl set showmatch
+
+" Prevent perl filetype plugin from adding @INC to autocomplete
+let perlpath = '.'
 filetype plugin indent on
 syntax enable
 
