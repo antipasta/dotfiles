@@ -18,12 +18,12 @@ set wildmenu
 set tabstop=4
 set shiftwidth=4
 set expandtab
-"set nobackup
-"set nowritebackup
+set nobackup
+set nowritebackup
 set noswapfile
-set backup
-set backupdir=/~/.vim/backup
-set directory=/~/.vim/tmp
+"set backup
+"set backupdir=~/.vim/backup
+"set directory=~/.vim/tmp
  set matchpairs+=<:>
 set visualbell           " don't beep
 set noerrorbells         " don't beep
@@ -46,7 +46,7 @@ colors elflord
 autocmd FileType perl set showmatch
 
 " Prevent perl filetype plugin from adding @INC to autocomplete
-let perlpath = '.'
+"let perlpath = '/home/antipasta/perl5/lib/perl5/'
 filetype plugin indent on
 syntax enable
 
