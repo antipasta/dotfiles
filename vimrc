@@ -91,7 +91,7 @@ map .$ :s/\s\+$//<CR> <Esc>:noh<CR>
 "shortcut for quoting and comma separating items
 vmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
 nmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
-set pastetoggle=<Leader>1
+set pastetoggle=<F1>
 nnoremap ; : 
 
 " w!! will save file with sudo
