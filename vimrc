@@ -92,6 +92,10 @@ map .$ :s/\s\+$//<CR> <Esc>:noh<CR>
 vmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
 nmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
 set pastetoggle=<F1>
+
+"line number toggles
+nnoremap <silent> <F2> :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
+nnoremap <silent> <F3> :exec "se rnu!"<CR>
 nnoremap ; : 
 
 " w!! will save file with sudo
@@ -123,3 +127,5 @@ autocmd FileType perl noremap K :Pod <C-R><C-W><CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
+nnoremap > >>
+nnoremap < <<
