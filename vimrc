@@ -89,8 +89,8 @@ nmap <Leader>p :r ~/.vimbuffer<CR>
 map .$ :s/\s\+$//<CR> <Esc>:noh<CR>
 
 "shortcut for quoting and comma separating items
-vmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
-nmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
+vmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
 set pastetoggle=<F1>
 
 "line number toggles
