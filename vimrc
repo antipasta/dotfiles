@@ -18,12 +18,12 @@ set wildmenu
 set tabstop=4
 set shiftwidth=4
 set expandtab
-"set nobackup
-"set nowritebackup
+set nobackup
+set nowritebackup
 set noswapfile
-set backup
-set backupdir=/~/.vim/backup
-set directory=/~/.vim/tmp
+"set backup
+"set backupdir=~/.vim/backup
+"set directory=~/.vim/tmp
  set matchpairs+=<:>
 set visualbell           " don't beep
 set noerrorbells         " don't beep
@@ -46,7 +46,7 @@ colors elflord
 autocmd FileType perl set showmatch
 
 " Prevent perl filetype plugin from adding @INC to autocomplete
-let perlpath = '.'
+"let perlpath = '/home/antipasta/perl5/lib/perl5/'
 filetype plugin indent on
 syntax enable
 
@@ -89,9 +89,13 @@ nmap <Leader>p :r ~/.vimbuffer<CR>
 map .$ :s/\s\+$//<CR> <Esc>:noh<CR>
 
 "shortcut for quoting and comma separating items
-vmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
-nmap <Leader>, :s/\v(\w+)/'\1',/g<CR>
-set pastetoggle=<Leader>1
+vmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+set pastetoggle=<F1>
+
+"line number toggles
+nnoremap <silent> <F2> :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
+nnoremap <silent> <F3> :exec "se rnu!"<CR>
 nnoremap ; : 
 
 " w!! will save file with sudo
@@ -123,3 +127,5 @@ autocmd FileType perl noremap K :Pod <C-R><C-W><CR>
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
+nnoremap > >>
+nnoremap < <<
