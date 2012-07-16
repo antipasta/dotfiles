@@ -103,10 +103,6 @@ map <silent> <leader><cr> :noh<cr>
 nnoremap > >>
 nnoremap < <<
 
-nnoremap <Down> :noh<CR>
-nnoremap <Up> :noh<CR>
-nnoremap <Left> :noh<CR>
-nnoremap <Right> :noh<CR>
 
 
 "trying new stuff from vim help docs
@@ -119,3 +115,22 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 nnoremap - ;
 nnoremap ; : 
 nnoremap 0 ^
+
+"function! SuperTab()
+"    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
+"        return "\<Tab>"
+"    else
+"        return "\<C-n>"
+"    endif
+"endfunction
+"imap <Tab> <C-R>=SuperTab()<CR>
+
+function! CleverTab() 
+"   if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
+      return "\<Tab>"
+   else
+      return "\<C-N>"
+   endif
+endfunction
+inoremap <Tab> <C-R>=CleverTab()<CR>
