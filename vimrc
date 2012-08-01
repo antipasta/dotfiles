@@ -55,7 +55,7 @@ autocmd FileType perl set expandtab
 autocmd FileType perl set equalprg=perltidy
 autocmd FileType javascript set equalprg=js_beautify.pl\ -
 autocmd FileType make set noexpandtab
-
+autocmd FileType set equalprg& " default
 
 "joey changes start here-
 "remap leader from \ to ,
