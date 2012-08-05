@@ -1,6 +1,7 @@
 syntax on
 syntax enable
-colors elflord
+"colors elflord
+colors molokai_mod
 set history=100         
 set ruler               " show the cursor position all the time
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
