@@ -1,7 +1,7 @@
 syntax on
 syntax enable
 colors elflord
-set history=100         
+set history=100
 set ruler               " show the cursor position all the time
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
 set bs=2                " allow backspacing over everything in insert mode
@@ -13,7 +13,7 @@ set ignorecase
 set smartcase
 set ttyfast
 set fileencodings=utf-8
-set encoding=utf-8 
+set encoding=utf-8
 set enc=utf-8
 set fencs=utf-8
 set wildmenu
@@ -39,7 +39,7 @@ map <C-k> :tabnext<CR>
 map <C-j> :tabprev<CR>
 map ,/ :s/^/\/\//<CR> <Esc>:noh<CR>
 map ./ :s/^\/\///<CR> <Esc>:noh<CR>
-map ,# :s/^\(\s*\)/\1#<CR> <Esc>:noh<CR>
+map ,# :s/^/#/<CR> <Esc>:noh<CR>
 map .# :s/^\(\s*\)#\+/\1<CR> <Esc>:noh<CR>
 autocmd FileType perl set showmatch
 
@@ -65,7 +65,7 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 
 "yank/paste to a buffer file for pasting between separate vi instances
-vmap <Leader>y :w! ~/.vimbuffer<CR> 
+vmap <Leader>y :w! ~/.vimbuffer<CR>
 nmap <Leader>y :.w! ~/.vimbuffer<CR>
 nmap <Leader>p :r ~/.vimbuffer<CR>
 
@@ -113,7 +113,7 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 
 
 nnoremap - ;
-nnoremap ; : 
+nnoremap ; :
 nnoremap 0 ^
 
 "function! SuperTab()
@@ -125,7 +125,7 @@ nnoremap 0 ^
 "endfunction
 "imap <Tab> <C-R>=SuperTab()<CR>
 
-function! CleverTab() 
+function! CleverTab()
 "   if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
     if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
       return "\<Tab>"
