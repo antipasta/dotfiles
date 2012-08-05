@@ -113,7 +113,8 @@ map ]] j0[[%/{<CR><Esc>:noh<CR>
 map [] k$][%?}<CR><Esc>:noh<CR>
 
 
-nnoremap - ;
+"nnoremap - ;
+nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
 nnoremap <c-w>> <c-w>5>
