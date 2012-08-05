@@ -48,7 +48,7 @@ autocmd FileType perl set showmatch
 let perlpath = '.'
 filetype plugin indent on
 
-" check perl code with :make
+    " check perl code with :make
 autocmd FileType perl set makeprg=perl\ -Ilib\ -c\ %\ $*
 autocmd FileType perl set errorformat=%f:%l:%m
 autocmd FileType perl set autowrite
@@ -116,7 +116,8 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 nnoremap - ;
 nnoremap ; :
 nnoremap 0 ^
-
+nnoremap <c-w>> <c-w>5>
+nnoremap <c-w>< <c-w>5<
 "function! SuperTab()
 "    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
 "        return "\<Tab>"
