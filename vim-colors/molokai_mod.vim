@@ -206,6 +206,7 @@ if &t_Co > 255
    hi Todo            ctermfg=231 ctermbg=232   
     "joey - perl specific stuff added
    hi PerlVarPlain    ctermfg=81
+   hi PerlVarPlain2    ctermfg=81
    hi Typedef         ctermfg=81
    hi Type            ctermfg=81                cterm=none
    hi Underlined      ctermfg=244               cterm=underline
