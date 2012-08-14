@@ -69,6 +69,8 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 vmap <Leader>y :w! ~/.vimbuffer<CR>
 nmap <Leader>y :.w! ~/.vimbuffer<CR>
 nmap <Leader>p :r ~/.vimbuffer<CR>
+vmap <Leader>Y :w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
+nmap <Leader>Y :.w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
 
 "remove trailing whitespace
 map .$ :%s/\s\+$//<CR> <Esc>:noh<CR>
