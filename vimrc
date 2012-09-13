@@ -83,6 +83,9 @@ nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
 nnoremap <silent> <F2> :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
 nnoremap <silent> <F3> :exec "se rnu!"<CR>
 
+" Ctrl-I increments since Ctrl-A is my tmux key
+noremap <C-I> <C-A>
+
 " w!! will save file with sudo
 cabbrev w!! w !sudo tee % >/dev/null
 
