@@ -122,8 +122,8 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
-nnoremap <c-w>> <c-w>5>
-nnoremap <c-w>< <c-w>5<
+"nnoremap <c-w>> <c-w>5>
+"nnoremap <c-w>< <c-w>5<
 "function! SuperTab()
 "    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
 "        return "\<Tab>"
