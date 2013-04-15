@@ -31,3 +31,6 @@ ec2-info() {
 export EDITOR=vim
 export PATH=$HOME/perl5/bin:$PATH
 source `which devel-local.sh`
+function github() {
+    git clone git@github.com:SocialFlowDev/$1.git
+}
