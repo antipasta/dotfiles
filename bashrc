@@ -1,5 +1,7 @@
 
-alias sfcpanm='cpanm --mirror http://devdb:25123 --mirror-only'
+#alias sfcpanm='cpanm --mirror http://devdb:25123 --mirror-only'
+alias sfcpanm='cpanm --mirror http://dev.socialflow.com:25123 --mirror-only'
+alias ack='ack-grep'
 eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
@@ -27,3 +29,8 @@ ec2-info() {
     echo -ne "\n"
 }
 export EDITOR=vim
+export PATH=$HOME/perl5/bin:$PATH
+source `which devel-local.sh`
+function github() {
+    git clone git@github.com:SocialFlowDev/$1.git
+}
