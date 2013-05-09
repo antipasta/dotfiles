@@ -1,6 +1,3 @@
-
-#alias sfcpanm='cpanm --mirror http://devdb:25123 --mirror-only'
-alias sfcpanm='cpanm --mirror http://dev.socialflow.com:25123 --mirror-only'
 alias ack='ack-grep'
 eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
@@ -34,3 +31,17 @@ source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
 }
+
+git-extract-dir() {
+    DIR=$1
+    git filter-branch --subdirectory-filter ${DIR} HEAD -- --all --prune-empty 
+    git reset --hard
+    rm -rf .git/refs/original/
+    git reflog expire --expire=now --all
+    git gc --aggressive --prune=now
+}
+export PYTHONPATH=~/github-Python/
+
+
+alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
+alias sfcpanm='cpanm --mirror http://devdb:25123 --mirror-only'
