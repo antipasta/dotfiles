@@ -40,8 +40,13 @@ git-extract-dir() {
     git reflog expire --expire=now --all
     git gc --aggressive --prune=now
 }
+agc () {  ag --color "$@" | less -R ; }
 export PYTHONPATH=~/github-Python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
 alias sfcpanm='cpanm --mirror http://devdb:25123 --mirror-only'
+alias bump='perl-reversion --bump '
+alias vi='vi -p'
+alias lessr='less -R'
+alias shadowpaste='nopaste -s Shadowcat '
