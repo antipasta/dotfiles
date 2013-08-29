@@ -1,5 +1,5 @@
 alias ack='ack-grep'
-eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+ [ -f $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
 export HISTCONTROL=ignoreboth
@@ -27,7 +27,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export PATH=$HOME/perl5/bin:$PATH
-source `which devel-local.sh`
+`which devel-local.sh` && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
 }
