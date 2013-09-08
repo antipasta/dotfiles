@@ -1,5 +1,5 @@
 alias ack='ack-grep'
- [ -f $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+ [ -d $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
 export HISTCONTROL=ignoreboth
@@ -8,6 +8,7 @@ shopt -s checkwinsize
 export HISTFILESIZE=300000
 export HISTSIZE=30000
 PROMPT_COMMAND='history -a'
+export TERM=xterm-256color
 
 
 ## for when ssh agent gets screwy
@@ -26,8 +27,8 @@ ec2-info() {
     echo -ne "\n"
 }
 export EDITOR=vim
-export PATH=$HOME/perl5/bin:$PATH
-`which devel-local.sh` && source `which devel-local.sh`
+export PATH=$HOME/perl5/bin:$PATH 
+[ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
 }
@@ -50,3 +51,4 @@ alias bump='perl-reversion --bump '
 alias vi='vi -p'
 alias lessr='less -R'
 alias shadowpaste='nopaste -s Shadowcat '
+
