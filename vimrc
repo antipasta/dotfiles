@@ -33,6 +33,14 @@ set pastetoggle=<F1>
 set wildmode=list:longest,full
 set scrolloff=5
 
+" Proper cursor icon on insert mode
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
 let perl_include_pod = 1
 let perl_extended_vars = 1
 
@@ -146,3 +154,5 @@ function! CleverTab()
    endif
 endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
+nnoremap <leader>o :!echo `git url`/blob/`git rev-parse --abbrev-ref HEAD`/%\#L<C-R>=line('.')<CR><CR>
+

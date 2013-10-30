@@ -1,2 +1,3 @@
 #!/bin/sh
-echo '[ -f ~/configs/bashrc ] && . ~/configs/bashrc' >> ~/.bashrc
+DIR="$(pwd)"
+echo "[ -f $DIR/bashrc ] && . $DIR/bashrc" >> ~/.bashrc
