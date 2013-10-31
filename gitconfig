@@ -10,3 +10,4 @@
     uncommit = reset --soft HEAD^
     onstage = diff --staged
     url =! bash -c 'git config --get remote.origin.url | sed -E "s/.+:\\(.+\\)\\.git$/https:\\\\/\\\\/github\\\\.com\\\\/\\\\1/g"'
+    currentbranch = rev-parse --abbrev-ref HEAD
