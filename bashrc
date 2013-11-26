@@ -27,7 +27,7 @@ ec2-info() {
     echo -ne "\n"
 }
 export EDITOR=vim
-export PATH=$HOME/perl5/bin:$PATH 
+export PATH=$HOME/perl5/bin:/usr/sbin/:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -42,11 +42,20 @@ git-extract-dir() {
     git gc --aggressive --prune=now
 }
 agc () {  ag --color "$@" | less -R ; }
+
+pie () { 
+    if [[ -n $2 ]]; then
+        perl -p -i -e "$1" `find .  -name "$2" ! -type d`
+    else
+        echo hi
+        perl -p -i -e "$1" `find . ! -type d`
+    fi
+}
 export PYTHONPATH=~/github-Python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
-alias sfcpanm='cpanm --mirror http://devdb:25123 --mirror-only'
+alias sfcpanm='cpanm --mirror http://cpan-mirror.dev.saturn.sflow.us:25123 --mirror-only'
 alias bump='perl-reversion --bump '
 alias vi='vi -p'
 alias lessr='less -R'
