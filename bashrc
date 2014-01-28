@@ -1,4 +1,4 @@
-alias ack='ack-grep'
+
  [ -d $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
@@ -27,7 +27,7 @@ ec2-info() {
     echo -ne "\n"
 }
 export EDITOR=vim
-export PATH=$HOME/perl5/bin:/usr/sbin/:$PATH 
+export PATH=$HOME/bin:$HOME/perl5/bin:/usr/sbin/:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -55,9 +55,14 @@ export PYTHONPATH=~/github-Python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
-alias sfcpanm='cpanm --mirror http://cpan-mirror.dev.saturn.sflow.us:25123 --mirror-only'
+alias sfcpanm='cpanm --mirror file:///srv/socialflow/mcpan/ --mirror-only'
 alias bump='perl-reversion --bump '
 alias vi='vi -p'
 alias lessr='less -R'
 alias shadowpaste='nopaste -s Shadowcat '
 
+if command -v ag >/dev/null 2>&1; then
+    alias ack=ag
+elif command -v ack-grep >/dev/null 2>&1; then
+    alias ack='ack-grep'
+fi

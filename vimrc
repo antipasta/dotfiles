@@ -148,3 +148,7 @@ endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
 nnoremap <leader>o :!echo `git url`/blob/`git rev-parse --abbrev-ref HEAD`/%\#L<C-R>=line('.')<CR><CR>
 
+if executable("ag")
+    let g:ackprg="ag --nocolor --nogroup --column"
+endif
+
