@@ -1,5 +1,5 @@
-
- [ -d $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+[ ${OSTYPE:0:6} == darwin ] && export PS1="\u@\h:\w$ "
+[ -d $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
 export HISTCONTROL=ignoreboth
