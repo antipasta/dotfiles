@@ -1,4 +1,5 @@
 [ ${OSTYPE:0:6} == darwin ] && export PS1="\u@\h:\w$ "
+[ ${OSTYPE:0:6} == darwin ] && export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
 [ -d $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
@@ -7,7 +8,7 @@ shopt -s histappend
 shopt -s checkwinsize
 export HISTFILESIZE=300000
 export HISTSIZE=30000
-PROMPT_COMMAND='history -a'
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 export TERM=xterm-256color
 
 
