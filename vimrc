@@ -126,17 +126,6 @@ vnoremap _ {
 nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
-"nnoremap <c-w>> <c-w>5>
-"nnoremap <c-w>< <c-w>5<
-"function! SuperTab()
-"    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
-"        return "\<Tab>"
-"    else
-"        return "\<C-n>"
-"    endif
-"endfunction
-"imap <Tab> <C-R>=SuperTab()<CR>
-
 function! CleverTab()
 "   if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
     if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
