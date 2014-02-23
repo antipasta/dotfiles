@@ -126,6 +126,7 @@ vnoremap _ {
 nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
+nnoremap <Leader>r :sp<CR>:Rack 
 function! CleverTab()
 "   if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
     if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
