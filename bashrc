@@ -52,7 +52,7 @@ pie () {
         perl -p -i -e "$1" `find . ! -type d`
     fi
 }
-export PYTHONPATH=~/github-Python/
+export PYTHONPATH=~/python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
@@ -61,6 +61,7 @@ alias bump='perl-reversion --bump '
 alias vi='vi -p'
 alias lessr='less -R'
 alias shadowpaste='nopaste -s Shadowcat '
+alias netstat='netstat --wide'
 
 if command -v ag >/dev/null 2>&1; then
     alias ack=ag
