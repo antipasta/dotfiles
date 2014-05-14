@@ -23,7 +23,7 @@ set visualbell
 set noerrorbells
 " }}}
 
-" Regexp {{{
+" Search {{{
 set magic
 " Ignore case in regex unless at least one capital 
 set ignorecase
@@ -110,11 +110,6 @@ map .# :s/^\(\s*\)#\+/\1<CR> <Esc>:noh<CR>
 
 " }}}
 
-" Tabbing {{{
-map <C-k> :tabnext<CR>
-map <C-j> :tabprev<CR>
-" }}}
-
 " Yank and Paste {{{
 vmap <Leader>y :w! ~/.vimbuffer<CR>
 nmap <Leader>y :.w! ~/.vimbuffer<CR>
@@ -158,6 +153,11 @@ cabbrev w!! w !sudo tee % >/dev/null
 
 "remove trailing whitespace
 map .$ :%s/\s\+$//<CR> <Esc>:noh<CR>
+
+" Move between tabs {{{
+map <C-k> :tabnext<CR>
+map <C-j> :tabprev<CR>
+" }}}
 
 " Jump to top and bottom of functions {{{
 " from vim help docs
