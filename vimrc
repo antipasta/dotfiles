@@ -1,27 +1,27 @@
 " vim: set fdm=marker:
+set matchpairs+=<:>
+autocmd FileType javascript set equalprg=js_beautify.pl\ -
+
+
+" Basic vim setup {{{
 syntax on
 syntax enable
-"colors elflord
 colors molokaimod
+"colors elflord
 set nocompatible
+set ttyfast
+set mouse=a
 set history=100         
 set ruler               " show the cursor position all the time
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
 set bs=2                " allow backspacing over everything in insert mode
 set winminheight=0
-set ttyfast
-set matchpairs+=<:>
-set mouse=a
-set iskeyword+=:
 set scrolloff=5
-filetype plugin indent on
-autocmd FileType javascript set equalprg=js_beautify.pl\ -
-autocmd FileType make set noexpandtab
-autocmd FileType set equalprg& " default
 
-" set dir to directory of current file
-autocmd BufEnter * silent! lcd %:p:h
-
+" no beeping
+set visualbell
+set noerrorbells
+" }}}
 
 " Regexp {{{
 set magic
@@ -36,20 +36,24 @@ set hlsearch
 set incsearch
 " }}}
 
-" Spaces not tabs {{{
+" Indenting {{{
+filetype plugin indent on
 set expandtab
 set tabstop=4
 set shiftwidth=4
-" }}}
 
-" No beeping {{{
-set visualbell
-set noerrorbells
+" Dont expand tabs in makefiles
+autocmd FileType make set noexpandtab
 " }}}
 
 " File manager settings {{{
+
 set wildmenu
 set wildmode=list:longest,full
+
+" Open file manager in directory of current file
+autocmd BufEnter * silent! lcd %:p:h
+
 " }}}
 
 " UTF8 {{{
@@ -81,6 +85,8 @@ autocmd FileType perl set errorformat=%f:%l:%m
 autocmd FileType perl set autowrite
 autocmd FileType perl set expandtab
 autocmd FileType perl set equalprg=perltidy
+
+set iskeyword+=:
 
 " Perldoc with K {{{
 command! -bar -nargs=1 DoPod %!perldoc -t <args>
