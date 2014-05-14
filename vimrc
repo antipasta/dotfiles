@@ -1,8 +1,3 @@
-" vim: set fdm=marker:
-set matchpairs+=<:>
-autocmd FileType javascript set equalprg=js_beautify.pl\ -
-
-
 " Basic vim setup {{{
 syntax on
 syntax enable
@@ -21,6 +16,7 @@ set scrolloff=5
 " no beeping
 set visualbell
 set noerrorbells
+
 " }}}
 
 " Search {{{
@@ -138,6 +134,8 @@ noremap <C-I> <C-A>
 map <silent> <leader><cr> :noh<cr>
 nnoremap > >>
 nnoremap < <<
+vnoremap > >gv
+vnoremap < <gv
 nnoremap - }
 nnoremap _ {
 vnoremap - }
@@ -194,3 +192,9 @@ if executable("ag")
 endif
 " }}}
 
+"Misc {{{
+autocmd FileType javascript set equalprg=js_beautify.pl\ -
+set matchpairs+=<:>
+" }}}
+
+" vim: set fdm=marker:
