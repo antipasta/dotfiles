@@ -106,13 +106,6 @@ map .# :s/^\(\s*\)#\+/\1<CR> <Esc>:noh<CR>
 
 " }}}
 
-" Yank and Paste {{{
-vmap <Leader>y :w! ~/.vimbuffer<CR>
-nmap <Leader>y :.w! ~/.vimbuffer<CR>
-nmap <Leader>p :r ~/.vimbuffer<CR>
-vmap <Leader>Y :w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
-nmap <Leader>Y :.w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
-" }}}
 
 " Function key toggles {{{
 set pastetoggle=<F1>
@@ -169,6 +162,13 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 vmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
 nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
 
+" }}}
+" Yank and Paste {{{
+vmap <Leader>y :w! ~/.vimbuffer<CR>
+nmap <Leader>y :.w! ~/.vimbuffer<CR>
+nmap <Leader>p :r ~/.vimbuffer<CR>
+vmap <Leader>Y :w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
+vmap <Leader>P : !nopaste -s 'Gist Pastie' --private -q<CR>
 " }}}
 
 " Autocomplete with tab {{{

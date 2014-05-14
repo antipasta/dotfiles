@@ -68,3 +68,4 @@ if command -v ag >/dev/null 2>&1; then
 elif command -v ack-grep >/dev/null 2>&1; then
     alias ack='ack-grep'
 fi
+[ -f /home/joe/dotfiles/additional_options ] && . /home/joe/dotfiles/additional_options
