@@ -162,6 +162,7 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 "shortcut for quoting and comma separating items
 vmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
 nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+nmap <Leader>= [[V%=
 
 " }}}
 " Yank and Paste {{{

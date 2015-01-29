@@ -1,0 +1,12 @@
+Host *.priv.sf
+  User appuser
+  ConnectTimeout 30
+  ProxyCommand ssh -o VisualHostKey=no joe@prodvm nc -q0 %h %p 2>/dev/null
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+
+Host dev-home.priv.sf
+    User joe
+    LocalForward *:8000 dev-home.priv.sf:8030
+    LogLevel Quiet
+
