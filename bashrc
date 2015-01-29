@@ -69,3 +69,5 @@ elif command -v ack-grep >/dev/null 2>&1; then
     alias ack='ack-grep'
 fi
 [ -f /home/joe/dotfiles/additional_options ] && . /home/joe/dotfiles/additional_options
+export GOPATH=$HOME/code/go
+export PATH=$PATH:$GOPATH/bin

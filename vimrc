@@ -81,6 +81,7 @@ autocmd FileType perl set errorformat=%f:%l:%m
 autocmd FileType perl set autowrite
 autocmd FileType perl set expandtab
 autocmd FileType perl set equalprg=perltidy
+autocmd FileType go set equalprg=gofmt
 
 set iskeyword+=:
 
