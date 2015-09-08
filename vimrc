@@ -1,4 +1,5 @@
 " Basic vim setup {{{
+execute pathogen#infect()
 syntax on
 syntax enable
 colors molokaimod
@@ -172,16 +173,6 @@ vmap <Leader>Y :w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
 vmap <Leader>P : !nopaste -s 'Gist Pastie' --private -q<CR>
 " }}}
 
-" Autocomplete with tab {{{
-function! CleverTab()
-    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
-      return "\<Tab>"
-   else
-      return "\<C-N>"
-   endif
-endfunction
-inoremap <Tab> <C-R>=CleverTab()<CR>
-" }}}
 
 " Plugin setup {{{
 " CtrlP setup
@@ -196,6 +187,18 @@ endif
 "Misc {{{
 autocmd FileType javascript set equalprg=js_beautify.pl\ -
 set matchpairs+=<:>
+" omni complete pops up annoying preview window
+set completeopt-=preview
+let g:SuperTabDefaultCompletionType = "context"
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_fmt_autosave = 1
+let g:go_fmt_command = "goimports"
+let g:go_auto_type_info = 1
 " }}}
 
 " vim: set fdm=marker:

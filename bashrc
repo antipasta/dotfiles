@@ -28,7 +28,8 @@ ec2-info() {
     echo -ne "\n"
 }
 export EDITOR=vim
-export PATH=$HOME/bin:$HOME/perl5/bin:/usr/sbin/:$PATH 
+export GOPATH=$HOME/code/go
+export PATH=$HOME/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -69,3 +70,4 @@ elif command -v ack-grep >/dev/null 2>&1; then
     alias ack='ack-grep'
 fi
 [ -f /home/joe/dotfiles/additional_options ] && . /home/joe/dotfiles/additional_options
+
