@@ -142,6 +142,7 @@ nnoremap <Leader>r :Rack
 
 " w!! will save file with sudo
 cabbrev w!! w !sudo tee % >/dev/null
+command WD call delete(@%) | w
 
 "remove trailing whitespace
 map .$ :%s/\s\+$//<CR> <Esc>:noh<CR>
@@ -197,8 +198,8 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 1
-let g:go_fmt_command = "goimports"
-let g:go_auto_type_info = 1
+"let g:go_fmt_command = "goimports"
+"let g:go_auto_type_info = 1
 " }}}
 
 " vim: set fdm=marker:
