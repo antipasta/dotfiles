@@ -142,7 +142,6 @@ nnoremap <Leader>r :Rack
 
 " w!! will save file with sudo
 cabbrev w!! w !sudo tee % >/dev/null
-command WD call delete(@%) | w
 
 "remove trailing whitespace
 map .$ :%s/\s\+$//<CR> <Esc>:noh<CR>
@@ -190,7 +189,16 @@ autocmd FileType javascript set equalprg=js_beautify.pl\ -
 set matchpairs+=<:>
 " omni complete pops up annoying preview window
 set completeopt-=preview
-let g:SuperTabDefaultCompletionType = "context"
+"au FileType go let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabDefaultCompletionType = 'context'
+autocmd FileType javascript let g:SuperTabDefaultCompletionType= '<c-p>'
+autocmd FileType go,perl
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-n>") |
+    \ endif
+" }}}
+
+"Go stuff {{{
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -198,7 +206,15 @@ let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 1
-"let g:go_fmt_command = "goimports"
+let g:go_fmt_command = "goimports"
+au FileType go nmap <Leader>dx <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+au FileType go nmap <Leader>i <Plug>(go-info)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <leader>b <Plug>(go-build)
+map <C-n> :lne<CR>
+map <C-m> :lp<CR>
 "let g:go_auto_type_info = 1
 " }}}
 

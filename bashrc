@@ -29,7 +29,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-export PATH=$HOME/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$PATH 
+export PATH=$HOME/bin:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
