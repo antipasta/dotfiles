@@ -47,6 +47,7 @@ autocmd FileType make set noexpandtab
 
 set wildmenu
 set wildmode=list:longest,full
+set wildignore+=*/bower_components/*,*/node_modules/*,*.so,*.swp,*.zip
 
 " Open file manager in directory of current file
 autocmd BufEnter * silent! lcd %:p:h
@@ -185,7 +186,7 @@ endif
 " }}}
 
 "Misc {{{
-autocmd FileType javascript set equalprg=js_beautify.pl\ -
+autocmd FileType javascript set equalprg=js-beautify\ -
 set matchpairs+=<:>
 " omni complete pops up annoying preview window
 set completeopt-=preview
@@ -217,5 +218,17 @@ map <C-n> :lne<CR>
 map <C-m> :lp<CR>
 "let g:go_auto_type_info = 1
 " }}}
+
+"Syntastic {{{
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['jshint']
+"" }}}
 
 " vim: set fdm=marker:
