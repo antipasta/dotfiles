@@ -1,6 +1,6 @@
 [ ${OSTYPE:0:6} == darwin ] && export PS1="\u@\h:\w$ "
 [ ${OSTYPE:0:6} == darwin ] && export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
-[ -d $HOME/perl5 ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+[ -d $HOME/perl5/lib ] && eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
 
 ## global history
 export HISTCONTROL=ignoreboth
@@ -71,3 +71,7 @@ fi
 [ -f /home/joe/dotfiles/additional_options ] && . /home/joe/dotfiles/additional_options
 export GOPATH=$HOME/code/go
 export PATH=$PATH:$GOPATH/bin
+export PERLBREW_ROOT=$HOME/perlbrew
+export DOCKER_HOST=tcp://192.168.99.100:2376
+export DOCKER_CERT_PATH=/Users/joseph/.docker/machine/machines/dev
+export DOCKER_TLS_VERIFY=1
