@@ -1,2 +1,6 @@
 /bower_components/
 /node_modules/
+/t/data/
+/share/t/data/
+*.map
+*.min.js
