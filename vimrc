@@ -38,9 +38,16 @@ filetype plugin indent on
 set expandtab
 set tabstop=4
 set shiftwidth=4
+autocmd FileType html setlocal tabstop=2
+autocmd FileType html setlocal shiftwidth=2
 
 " Dont expand tabs in makefiles
 autocmd FileType make set noexpandtab
+" }}}
+
+" File types {{{
+au BufNewFile,BufRead *.html.tpl set filetype=html
+
 " }}}
 
 " File manager settings {{{
@@ -161,7 +168,7 @@ map [] k$][%?}<CR><Esc>:noh<CR>
 " }}}
 
 "shortcut for quoting and comma separating items
-vmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+vmap <Leader>, :s/,/,\r/g<CR><Esc>:noh<CR>
 nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
 nmap <Leader>= [[V%=
 
@@ -187,6 +194,8 @@ endif
 
 "Misc {{{
 autocmd FileType javascript set equalprg=js-beautify\ -
+"autocmd FileType html set equalprg=tidy\ -q\ -i\ --show-errors\ 0\ -
+autocmd FileType html set equalprg=js-beautify\ --type\ html\ -
 set matchpairs+=<:>
 " omni complete pops up annoying preview window
 set completeopt-=preview
@@ -217,6 +226,10 @@ au FileType go nmap <leader>b <Plug>(go-build)
 map <C-n> :lne<CR>
 map <C-m> :lp<CR>
 "let g:go_auto_type_info = 1
+"let g:go_fmt_autosave = 0
+au FileType go iabbrev _brdoes r *http.Request, results *validation.ValidatedResults) error {<CR>
+au FileType go iabbrev _brhandler w http.ResponseWriter, r *http.Request, results *validation.ValidatedResults) (*api.Return, error) {<CR>
+
 " }}}
 
 "Syntastic {{{
@@ -229,6 +242,16 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_html_tidy_exec = 'tidy'
+let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary attribute' ]
+
+
+
+
+" Reccommendation of when using syntastic with vimgo to prevent lag
+"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html'] }
+
 "" }}}
 
 " vim: set fdm=marker:
