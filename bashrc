@@ -76,3 +76,14 @@ export PERLBREW_ROOT=$HOME/perlbrew
 export DOCKER_HOST=tcp://192.168.99.100:2376
 export DOCKER_CERT_PATH=/Users/joseph/.docker/machine/machines/dev
 export DOCKER_TLS_VERIFY=1
+
+function refresh_gpga() {
+    if [ -f "${HOME}/.gpg-agent-info" ]; then
+        . "${HOME}/.gpg-agent-info"
+        export GPG_AGENT_INFO
+        export SSH_AUTH_SOCK
+    else
+        eval $( gpg-agent --daemon --write-env-file "${HOME}/.gpg-agent-info" )
+    fi
+}
+refresh_gpga

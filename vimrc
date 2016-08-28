@@ -255,4 +255,12 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html'] }
 
 "" }}}
 
+
+
+function! Rack(args)
+    let l:gitDir = system("git rev-parse --show-toplevel")
+    execute 'Ack ' . a:args  .' ' . l:gitDir
+endfunction
+command! -bang -nargs=* -complete=file Rack call Rack(<q-args>)
+
 " vim: set fdm=marker:
