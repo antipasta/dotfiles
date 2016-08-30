@@ -178,8 +178,6 @@ nmap <Leader>= [[V%=
 vmap <Leader>y :w! ~/.vimbuffer<CR>
 nmap <Leader>y :.w! ~/.vimbuffer<CR>
 nmap <Leader>p :r ~/.vimbuffer<CR>
-vmap <Leader>Y :w ! ssh -p12344 joey@127.0.0.1 'pbcopy' <CR>
-vmap <Leader>P : !nopaste -s 'Gist Pastie' --private -q<CR>
 " }}}
 
 
