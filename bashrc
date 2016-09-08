@@ -87,4 +87,3 @@ function refresh_gpga() {
         eval $( gpg-agent --daemon --write-env-file "${HOME}/.gpg-agent-info" )
     fi
 }
-refresh_gpga
