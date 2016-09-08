@@ -249,9 +249,17 @@ let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary at
 
 " Reccommendation of when using syntastic with vimgo to prevent lag
 "let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html'] }
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'perl'] }
 
 "" }}}
+
+if executable("fzf")
+    set rtp+=~/.fzf
+    let g:fzf_layout = { 'right': '~40%' }
+    nnoremap <silent> <C-L> :<C-u>GZF<CR>
+    command! -bang -nargs=* -complete=file GZF call fzf#run(fzf#wrap({'dir': system("git rev-parse --show-toplevel"),  'options' : '--multi'},<bang>0))
+endif
+
 
 
 
