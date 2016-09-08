@@ -58,6 +58,8 @@ set wildignore+=*/bower_components/*,*/node_modules/*,*.so,*.swp,*.zip
 
 " Open file manager in directory of current file
 autocmd BufEnter * silent! lcd %:p:h
+set autochdir
+
 
 " }}}
 
