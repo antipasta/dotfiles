@@ -8,6 +8,8 @@ shopt -s histappend
 shopt -s checkwinsize
 export HISTFILESIZE=300000
 export HISTSIZE=30000
+export HISTTIMEFORMAT='%F %T '
+
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 #export TERM=xterm-256color
 export TERM=screen-256color
