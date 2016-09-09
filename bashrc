@@ -89,3 +89,5 @@ function refresh_gpga() {
         eval $( gpg-agent --daemon --write-env-file "${HOME}/.gpg-agent-info" )
     fi
 }
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
