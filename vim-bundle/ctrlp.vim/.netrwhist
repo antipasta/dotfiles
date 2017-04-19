@@ -1,3 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
-let g:netrw_dirhist_1='/Users/socialflow/release/sf-deploy-application/application/SocialFlow-Web/prod'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/joseph/code/bugreplay/floatinghead/extension/src/js/bugreplay'
+let g:netrw_dirhist_2='/Users/joseph/code/bugreplay/floatinghead/extension/src/js'
+let g:netrw_dirhist_3='/Users/joseph/code/bugreplay/floatinghead'

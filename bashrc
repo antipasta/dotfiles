@@ -50,10 +50,9 @@ agc () {  ag --color "$@" | less -R ; }
 
 pie () { 
     if [[ -n $2 ]]; then
-        perl -p -i -e "$1" `find .  -name "$2" ! -type d`
+        perl -p -i -e "$1" `find .  -name "$2" ! -type d ! -path '*/\.*'`
     else
-        echo hi
-        perl -p -i -e "$1" `find . ! -type d`
+        perl -p -i -e "$1" `find . ! -type d ! -path '*/\.*'`
     fi
 }
 export PYTHONPATH=~/python/

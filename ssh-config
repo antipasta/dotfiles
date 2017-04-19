@@ -1,12 +1,39 @@
 Host *.priv.sf
   User appuser
   ConnectTimeout 30
-  ProxyCommand ssh -o VisualHostKey=no joe@prodvm nc -q0 %h %p 2>/dev/null
+  #ProxyCommand ssh -o VisualHostKey=no joe@prodvm nc -q0 %h %p 2>/dev/null
+  #ProxyCommand ssh -p2222 -o VisualHostKey=no root@localhost nc -q0 %h %p 2>/dev/null
+  ProxyCommand docker exec -i prodvpn nc -q0 %h %p 2>/dev/null
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
-Host dev-home.priv.sf
-    User joe
-    LocalForward *:8000 dev-home.priv.sf:8030
-    LogLevel Quiet
+Host *.sflow.us
+  User appuser
+  StrictHostKeyChecking false
+#  IdentityFile ~/.ssh/2016_prod_home.key
+#
+Host *.sfsrv.net
+  User appuser
+  StrictHostKeyChecking false
+#
+#Host dev-home.priv.sf
+#    User root
+#    #LocalForward *:8000 dev-home.priv.sf:8030
+#    LogLevel Quiet
+#
 
+#
+#Host *.saturn.sfsrv.net
+#  IdentityFile ~/.ssh/2016_saturn_home.key
+#  ConnectTimeout 30
+#  ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+#  StrictHostKeyChecking false
+#  KbdInteractiveAuthentication false
+#
+
+#Host *.saturn.sflow.us
+#  IdentityFile ~/.ssh/2016_saturn_home.key
+#  ConnectTimeout 30
+#  ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+#  StrictHostKeyChecking false
+#  KbdInteractiveAuthentication false

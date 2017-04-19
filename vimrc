@@ -164,10 +164,6 @@ map <C-j> :tabprev<CR>
 
 " Jump to top and bottom of functions {{{
 " from vim help docs
-map [[ ?{<CR>w99[{<Esc>:noh<CR>
-map ][ /}<CR>b99]}<Esc>:noh<CR>
-map ]] j0[[%/{<CR><Esc>:noh<CR>
-map [] k$][%?}<CR><Esc>:noh<CR>
 " }}}
 
 "shortcut for quoting and comma separating items
