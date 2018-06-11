@@ -6,6 +6,9 @@ Plug 'ervandew/supertab'
 Plug 'vim-syntastic/syntastic'
 Plug 'junegunn/fzf', { 'dir': '~/bin/fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
+Plug 'jamessan/vim-gnupg'
+Plug 'vim-scripts/openssl.vim'
+Plug 'mileszs/ack.vim'
 call plug#end()
 syntax on
 syntax enable
