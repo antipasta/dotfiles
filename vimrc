@@ -230,6 +230,7 @@ autocmd FileType go,perl
 " }}}
 
 "Go stuff {{{
+let g:go_version_warning = 0
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
