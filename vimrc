@@ -265,6 +265,8 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_tidy_exec = 'tidy'
 let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary attribute' ]
+let g:syntastic_go_checkers = ['go']
+
 
 
 
