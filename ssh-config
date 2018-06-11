@@ -17,7 +17,7 @@ Host *.mars.sfsrv.net
 Host *.saturn.sfsrv.net
   User appuser
   ConnectTimeout 30
-  #ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+  ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
