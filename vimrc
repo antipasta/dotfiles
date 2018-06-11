@@ -1,15 +1,17 @@
-" Basic vim setup {{{
-"execute pathogen#infect()
+" Plugin installation {{{
 call plug#begin('~/.vim/plugged')
-Plug 'fatih/vim-go'
-Plug 'ervandew/supertab'
-Plug 'vim-syntastic/syntastic'
-Plug 'junegunn/fzf', { 'dir': '~/bin/fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
-Plug 'jamessan/vim-gnupg'
-Plug 'vim-scripts/openssl.vim'
-Plug 'mileszs/ack.vim'
+    Plug 'fatih/vim-go'
+    Plug 'ervandew/supertab'
+    Plug 'vim-syntastic/syntastic'
+    Plug 'junegunn/fzf', { 'dir': '~/bin/fzf', 'do': './install --bin' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'jamessan/vim-gnupg'
+    Plug 'vim-scripts/openssl.vim'
+    Plug 'mileszs/ack.vim'
 call plug#end()
+" }}}
+
+" Basic vim setup {{{
 syntax on
 syntax enable
 colors molokaimod
@@ -207,8 +209,8 @@ if executable("fzf")
     "nnoremap <silent> <C-P> :<C-u>FZF<CR>
     "command! -bang -nargs=* -complete=file GZF call fzf#run(fzf#wrap({'dir': system("git rev-parse --show-toplevel"),  'options' : '--multi'},<bang>0))
     command! GZF execute 'Files' s:find_git_root()
-    nnoremap <silent> <C-L> :<C-u>GZF<CR>
-
+    nnoremap <silent> <C-P> :<C-u>GZF<CR>
+endif
 " }}}
 
 "Misc {{{
@@ -273,7 +275,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'pe
 
 "" }}}
 
-endif
 
 
 
