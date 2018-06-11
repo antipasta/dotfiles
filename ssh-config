@@ -7,14 +7,30 @@ Host *.priv.sf
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
+Host *.mars.sfsrv.net
+  User appuser
+  ConnectTimeout 30
+  ProxyCommand docker exec -i marsvpn nc -q0 %h %p 2>/dev/null
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+
+Host *.saturn.sfsrv.net
+  User appuser
+  ConnectTimeout 30
+  #ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+
+
+
 Host *.sflow.us
   User appuser
   StrictHostKeyChecking false
 #  IdentityFile ~/.ssh/2016_prod_home.key
 #
-Host *.sfsrv.net
-  User appuser
-  StrictHostKeyChecking false
+#Host *.sfsrv.net
+#  User appuser
+#  StrictHostKeyChecking false
 #
 #Host dev-home.priv.sf
 #    User root
@@ -23,13 +39,14 @@ Host *.sfsrv.net
 #
 
 #
-#Host *.saturn.sfsrv.net
-#  IdentityFile ~/.ssh/2016_saturn_home.key
-#  ConnectTimeout 30
-#  ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
-#  StrictHostKeyChecking false
-#  KbdInteractiveAuthentication false
-#
+Host joe2.home.saturn.sfsrv.net
+  IdentityFile ~/.ssh/2016_saturn_home.key
+  ConnectTimeout 30
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+  LocalForward *:5432 pg-site.dev.saturn.sfsrv.net:5432
+  LocalForward *:7006 redis-2.dev.saturn.sfsrv.net:7006
+
 
 #Host *.saturn.sflow.us
 #  IdentityFile ~/.ssh/2016_saturn_home.key

@@ -65,7 +65,7 @@ export PYTHONPATH=~/python/
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
 alias sfcpanm='cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
 alias bump='perl-reversion --bump '
-alias vi='vi -p'
+alias vi='vim -p'
 alias lessr='less -R'
 alias shadowpaste='nopaste -s Shadowcat '
 alias netstat='netstat --wide'
@@ -91,3 +91,7 @@ function refresh_gpga() {
 }
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
+
+function filecurl {
+    cat $1 | xargs -n 1 curl -LO
+}
