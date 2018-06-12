@@ -203,6 +203,15 @@ function! s:find_git_root()
       return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
 
+fun! FzfOmni()
+  let is_git = system('git status')
+  if v:shell_error
+    :Files
+  else
+    :GitFiles
+  endif
+endfun
+
 
 if executable("fzf")
     command! -bang -nargs=+ -complete=dir Gitag call fzf#vim#ag_raw(<q-args> . ' ' . s:find_git_root(), 
