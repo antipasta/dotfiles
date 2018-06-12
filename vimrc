@@ -1,5 +1,17 @@
+" Plugin installation {{{
+call plug#begin('~/.vim/plugged')
+    Plug 'fatih/vim-go'
+    Plug 'ervandew/supertab'
+    Plug 'vim-syntastic/syntastic'
+    Plug 'junegunn/fzf', { 'dir': '~/bin/fzf', 'do': './install --bin' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'jamessan/vim-gnupg'
+    Plug 'vim-scripts/openssl.vim'
+    Plug 'mileszs/ack.vim'
+call plug#end()
+" }}}
+
 " Basic vim setup {{{
-execute pathogen#infect()
 syntax on
 syntax enable
 colors molokaimod
@@ -181,12 +193,24 @@ nmap <Leader>p :r ~/.vimbuffer<CR>
 
 
 " Plugin setup {{{
-" CtrlP setup
-set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 " Use ag with ack.vim if available
 if executable("ag")
     let g:ackprg="ag --nocolor --nogroup --column"
+endif
+
+" fzf setup
+function! s:find_git_root()
+      return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+
+
+if executable("fzf")
+    let g:fzf_layout = { 'down': '~30%' }
+    "nnoremap <silent> <C-P> :<C-u>FZF<CR>
+    "command! -bang -nargs=* -complete=file GZF call fzf#run(fzf#wrap({'dir': system("git rev-parse --show-toplevel"),  'options' : '--multi'},<bang>0))
+    command! GZF execute 'Files' s:find_git_root()
+    nnoremap <silent> <C-P> :<C-u>GZF<CR>
 endif
 " }}}
 
@@ -207,6 +231,7 @@ autocmd FileType *
 " }}}
 
 "Go stuff {{{
+let g:go_version_warning = 0
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -242,6 +267,8 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_tidy_exec = 'tidy'
 let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary attribute' ]
+let g:syntastic_go_checkers = ['go']
+
 
 
 
@@ -254,11 +281,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'pe
 
 "" }}}
 
-if executable("fzf")
-    let g:fzf_layout = { 'down': '~30%' }
-    nnoremap <silent> <C-L> :<C-u>GZF<CR>
-    command! -bang -nargs=* -complete=file GZF call fzf#run(fzf#wrap({'dir': system("git rev-parse --show-toplevel"),  'options' : '--multi'},<bang>0))
-endif
 
 
 
