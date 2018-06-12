@@ -59,11 +59,7 @@ export PYTHONPATH=~/python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
-<<<<<<< Updated upstream
 alias sfcpanm='cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
-=======
-#alias sfcpanm='cpanm --mirror file:///srv/socialflow/mcpan/ --mirror-only'
->>>>>>> Stashed changes
 alias bump='perl-reversion --bump '
 alias vi='vim -p'
 alias lessr='less -R'
