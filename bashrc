@@ -32,11 +32,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-<<<<<<< Updated upstream
-export PATH=$HOME/Library/Python/2.7/bin:$HOME/bin:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$PATH 
-=======
-export PATH=$HOME/bin:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$PATH 
->>>>>>> Stashed changes
+export PATH=$HOME/bin:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/Library/Python/2.7/bin:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -63,7 +59,11 @@ export PYTHONPATH=~/python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
+<<<<<<< Updated upstream
 alias sfcpanm='cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
+=======
+#alias sfcpanm='cpanm --mirror file:///srv/socialflow/mcpan/ --mirror-only'
+>>>>>>> Stashed changes
 alias bump='perl-reversion --bump '
 alias vi='vim -p'
 alias lessr='less -R'
@@ -79,7 +79,14 @@ fi
 export GOPATH=$HOME/code/go
 export PATH=$PATH:$GOPATH/bin
 export PERLBREW_ROOT=$HOME/perlbrew
+<<<<<<< Updated upstream
 
+=======
+#export DOCKER_HOST=tcp://192.168.99.100:2376
+#export DOCKER_CERT_PATH=/Users/joseph/.docker/machine/machines/dev
+#export DOCKER_TLS_VERIFY=1
+#
+>>>>>>> Stashed changes
 function refresh_gpga() {
     if [ -f "${HOME}/.gpg-agent-info" ]; then
         . "${HOME}/.gpg-agent-info"

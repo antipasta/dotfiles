@@ -150,6 +150,7 @@ nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
 nnoremap <Leader>r :Rack 
+autocmd FileType go setlocal omnifunc=go#complete#Complete
 
 " w!! will save file with sudo
 cabbrev w!! w !sudo tee % >/dev/null
@@ -197,9 +198,9 @@ set matchpairs+=<:>
 " omni complete pops up annoying preview window
 set completeopt-=preview
 "au FileType go let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabDefaultCompletionType = "context"
 autocmd FileType javascript let g:SuperTabDefaultCompletionType= '<c-p>'
-autocmd FileType go,perl
+autocmd FileType *
     \ if &omnifunc != '' |
     \   call SuperTabChain(&omnifunc, "<c-n>") |
     \ endif
@@ -223,7 +224,7 @@ au FileType go nmap <leader>b <Plug>(go-build)
 map <C-n> :lne<CR>
 map <C-m> :lp<CR>
 "let g:go_auto_type_info = 1
-"let g:go_fmt_autosave = 0
+"set updatetime=100
 au FileType go iabbrev _brdoes r *http.Request, results *validation.ValidatedResults) error {<CR>
 au FileType go iabbrev _brhandler w http.ResponseWriter, r *http.Request, results *validation.ValidatedResults) (*api.Return, error) {<CR>
 
@@ -246,7 +247,9 @@ let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary at
 
 
 " Reccommendation of when using syntastic with vimgo to prevent lag
-"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
+let g:syntastic_quiet_messages = { "regex": 'should have comment\|comment on' }
+
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'perl'] }
 
 "" }}}
@@ -269,5 +272,9 @@ function! Rack(args)
     execute 'Ack ' . a:args  .' ' . l:gitDir
 endfunction
 command! -bang -nargs=* -complete=file Rack call Rack(<q-args>)
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+
 
 " vim: set fdm=marker:
