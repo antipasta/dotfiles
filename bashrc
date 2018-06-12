@@ -75,14 +75,6 @@ fi
 export GOPATH=$HOME/code/go
 export PATH=$PATH:$GOPATH/bin
 export PERLBREW_ROOT=$HOME/perlbrew
-<<<<<<< Updated upstream
-
-=======
-#export DOCKER_HOST=tcp://192.168.99.100:2376
-#export DOCKER_CERT_PATH=/Users/joseph/.docker/machine/machines/dev
-#export DOCKER_TLS_VERIFY=1
-#
->>>>>>> Stashed changes
 function refresh_gpga() {
     if [ -f "${HOME}/.gpg-agent-info" ]; then
         . "${HOME}/.gpg-agent-info"
