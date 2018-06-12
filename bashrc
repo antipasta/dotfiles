@@ -86,6 +86,7 @@ function refresh_gpga() {
 }
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_DEFAULT_OPTS='--height 40%  --border'
 
 function filecurl {
     cat $1 | xargs -n 1 curl -LO

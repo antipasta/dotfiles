@@ -7,7 +7,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'jamessan/vim-gnupg'
     Plug 'vim-scripts/openssl.vim'
-    Plug 'mileszs/ack.vim'
 call plug#end()
 " }}}
 
@@ -161,7 +160,7 @@ vnoremap _ {
 nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
-nnoremap <Leader>r :Rack 
+nnoremap <Leader>f :Gitag 
 autocmd FileType go setlocal omnifunc=go#complete#Complete
 
 " w!! will save file with sudo
@@ -206,11 +205,27 @@ endfunction
 
 
 if executable("fzf")
-    let g:fzf_layout = { 'down': '~30%' }
-    "nnoremap <silent> <C-P> :<C-u>FZF<CR>
-    "command! -bang -nargs=* -complete=file GZF call fzf#run(fzf#wrap({'dir': system("git rev-parse --show-toplevel"),  'options' : '--multi'},<bang>0))
-    command! GZF execute 'Files' s:find_git_root()
-    nnoremap <silent> <C-P> :<C-u>GZF<CR>
+    command! -bang -nargs=+ -complete=dir Gitag call fzf#vim#ag_raw(<q-args> . ' ' . s:find_git_root(), 
+      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                 <bang>0)
+
+    let g:fzf_layout = { 'down': '~40%' }
+    nnoremap <silent> <C-P> :<C-u>GFiles<CR>
+    let g:fzf_colors =
+                \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
 endif
 " }}}
 
@@ -252,6 +267,10 @@ map <C-m> :lp<CR>
 "set updatetime=100
 au FileType go iabbrev _brdoes r *http.Request, results *validation.ValidatedResults) error {<CR>
 au FileType go iabbrev _brhandler w http.ResponseWriter, r *http.Request, results *validation.ValidatedResults) (*api.Return, error) {<CR>
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+
 
 " }}}
 
@@ -281,22 +300,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'pe
 
 "" }}}
 
-
-
-
-
-function! Rack(args)
-    let l:gitDir = system("git rev-parse --show-toplevel")
-    if l:gitDir =~ "Not a git repository"
-        execute 'Ack ' . a:args
-        return
-    endif
-    execute 'Ack ' . a:args  .' ' . l:gitDir
-endfunction
-command! -bang -nargs=* -complete=file Rack call Rack(<q-args>)
-let g:go_highlight_types = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
 
 
 " vim: set fdm=marker:
