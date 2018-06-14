@@ -1,6 +1,6 @@
 " Plugin installation {{{
 call plug#begin('~/.vim/plugged')
-    Plug 'fatih/vim-go'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'ervandew/supertab'
     Plug 'vim-syntastic/syntastic'
     Plug 'junegunn/fzf', { 'dir': '~/bin/fzf', 'do': './install --all --no-key-bindings' }
@@ -295,10 +295,6 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_tidy_exec = 'tidy'
 let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary attribute' ]
-let g:syntastic_go_checkers = ['go']
-
-
-
 
 
 " Reccommendation of when using syntastic with vimgo to prevent lag

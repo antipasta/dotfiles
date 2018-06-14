@@ -91,3 +91,10 @@ export FZF_DEFAULT_OPTS='--height 40%  --border'
 function filecurl {
     cat $1 | xargs -n 1 curl -LO
 }
+
+fd() {
+      local dir
+        dir=$(find ${1:-.} -path '*/\.*' -prune \
+                              -o -type d -print 2> /dev/null | fzf +m) &&
+                                cd "$dir"
+    }
