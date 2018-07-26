@@ -161,6 +161,7 @@ nnoremap \ ;
 nnoremap ; :
 nnoremap 0 ^
 nnoremap <Leader>f :Gitag 
+nnoremap <Leader>* :Gitag <cword><CR>
 autocmd FileType go setlocal omnifunc=go#complete#Complete
 
 " w!! will save file with sudo
