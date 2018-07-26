@@ -98,3 +98,11 @@ fd() {
                               -o -type d -print 2> /dev/null | fzf +m) &&
                                 cd "$dir"
     }
+
+if pgrep -x "gpg-agent" > /dev/null
+then
+	export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
+else
+	eval $(gpg-agent --daemon --enable-ssh-support --sh)
+fi
+
