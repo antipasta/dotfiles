@@ -1,7 +1,6 @@
 Host *.priv.sf
   User appuser
   ConnectTimeout 30
-  #ProxyCommand ssh -o VisualHostKey=no joe@prodvm nc -q0 %h %p 2>/dev/null
   #ProxyCommand ssh -p2222 -o VisualHostKey=no root@localhost nc -q0 %h %p 2>/dev/null
   ProxyCommand docker exec -i prodvpn nc -q0 %h %p 2>/dev/null
   StrictHostKeyChecking false
@@ -17,7 +16,7 @@ Host *.mars.sfsrv.net
 Host *.saturn.sfsrv.net
   User appuser
   ConnectTimeout 30
-  ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+  #ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
@@ -40,7 +39,7 @@ Host *.sflow.us
 
 #
 Host joe2.home.saturn.sfsrv.net
-  IdentityFile ~/.ssh/2016_saturn_home.key
+  #IdentityFile ~/.ssh/2016_saturn_home.key
   ConnectTimeout 30
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
