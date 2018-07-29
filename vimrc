@@ -306,6 +306,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'pe
 
 "" }}}
 
-
+let g:GPGDefaultRecipients=['0x059BE1E2A99DA7EB']
 
 " vim: set fdm=marker:
