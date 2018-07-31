@@ -106,3 +106,14 @@ else
 	eval $(gpg-agent --daemon --enable-ssh-support --sh)
 fi
 
+
+
+function toggle-agent {
+    if [[ $SSH_AUTH_SOCK =~ gpg ]]
+    then
+        export SSH_AUTH_SOCK=$(ls /private/tmp/com.apple.launchd.*/Listeners )
+    else
+        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
+    fi
+
+}
