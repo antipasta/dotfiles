@@ -307,7 +307,9 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'pe
 "" }}}
 
 let g:GPGDefaultRecipients=['0x059BE1E2A99DA7EB']
-nmap <silent> <C-W>Q <C-W>qi
+augroup GPGFile
+    nmap <silent> <C-W>Q <C-W>qi
+augroup END
 
 " For working with creds file
 augroup CredFile

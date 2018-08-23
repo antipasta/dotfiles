@@ -9,7 +9,8 @@ Host *.priv.sf
 Host *.mars.sfsrv.net
   User appuser
   ConnectTimeout 30
-  ProxyCommand docker exec -i marsvpn nc -q0 %h %p 2>/dev/null
+  #ProxyCommand docker exec -i marsvpn nc -q0 %h %p 2>/dev/null
+  ProxyCommand ~/dotfiles/script/vpnnc.sh marsvpn %h %p 
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
@@ -17,6 +18,7 @@ Host *.saturn.sfsrv.net
   User appuser
   ConnectTimeout 30
   #ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+  ProxyCommand ~/dotfiles/script/vpnnc.sh saturnvpn %h %p 
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
