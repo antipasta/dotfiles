@@ -17,7 +17,7 @@ colors molokaimod
 "colors elflord
 set nocompatible
 set ttyfast
-set mouse=a
+"set mouse=a
 set history=100         
 set ruler               " show the cursor position all the time
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
