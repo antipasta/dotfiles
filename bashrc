@@ -25,6 +25,15 @@ if [[ -n $TMUX ]]; then
 fi
 }
 
+function vpndocker() {
+    if [[ `stat -c '%a' /dev/net/tun` == '660' ]]; then
+        docker "$@"
+    else
+        echo 'lxc config device add penguin tun unix-char path=/dev/net/tun' | xclip -selection c
+        echo 'no access to /dev/net/tun'
+    fi
+}
+
 ec2-info() {
     IP=169.254.169.254
     ssh $1 "curl -q http://$IP/latest/meta-data/$2" 2>/dev/null
