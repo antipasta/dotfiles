@@ -41,7 +41,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-export PATH=$HOME/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$PATH 
+export PATH=$HOME/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:/usr/local/MacGPG2/bin/:/usr/local/bin/:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -82,7 +82,7 @@ elif command -v ack-grep >/dev/null 2>&1; then
 fi
 [ -f /home/joe/dotfiles/additional_options ] && . /home/joe/dotfiles/additional_options
 export GOPATH=$HOME/code/go
-export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 export PERLBREW_ROOT=$HOME/perlbrew
 function refresh_gpga() {
     if [ -f "${HOME}/.gpg-agent-info" ]; then

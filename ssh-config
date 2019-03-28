@@ -14,6 +14,22 @@ Host *.mars.sfsrv.net
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
+Host 20.0.*.*
+  User appuser
+  ConnectTimeout 30
+  ProxyCommand ~/dotfiles/script/vpnnc.sh marsvpn %h %p 
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+
+Host 10.125.*.*
+  User appuser
+  ConnectTimeout 30
+  ProxyCommand ~/dotfiles/script/vpnnc.sh saturnvpn %h %p 
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+
+
+
 Host *.saturn.sfsrv.net
   User appuser
   ConnectTimeout 30
@@ -21,6 +37,15 @@ Host *.saturn.sfsrv.net
   ProxyCommand ~/dotfiles/script/vpnnc.sh saturnvpn %h %p 
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
+
+Host 54.164.21.74
+  User appuser
+  ConnectTimeout 30
+  #ProxyCommand docker exec -i saturnvpn nc -q0 %h %p 2>/dev/null
+  ProxyCommand ~/dotfiles/script/vpnnc.sh saturnvpn %h %p 
+  StrictHostKeyChecking false
+  KbdInteractiveAuthentication false
+
 
 
 
