@@ -313,7 +313,7 @@ augroup END
 
 " For working with creds file
 augroup CredFile
-      au! BufRead,BufNewFile,BufEnter creds.yml.asc nmap <Leader>o f:w"+y$0yt::vs ../sf-deploy-application/<C-r>".aes<CR>
+      au! BufRead,BufNewFile,BufEnter creds.yml.asc nmap <Leader>o 0f:w"+y$0yt::vs ../sf-deploy-application/<C-r>".aes<CR>
 augroup END
 
 " vim: set fdm=marker:
