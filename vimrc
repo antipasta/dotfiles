@@ -49,8 +49,8 @@ filetype plugin indent on
 set expandtab
 set tabstop=4
 set shiftwidth=4
-autocmd FileType html setlocal tabstop=2
-autocmd FileType html setlocal shiftwidth=2
+autocmd FileType html,yaml,json setlocal tabstop=2
+autocmd FileType html,yaml,json setlocal shiftwidth=2
 
 " Dont expand tabs in makefiles
 autocmd FileType make set noexpandtab
@@ -162,6 +162,7 @@ nnoremap ; :
 nnoremap 0 ^
 nnoremap <Leader>f :Gitag 
 nnoremap <Leader>* :Gitag <cword><CR>
+nnoremap <Leader>t :SyntasticToggle<CR>
 autocmd FileType go setlocal omnifunc=go#complete#Complete
 
 " w!! will save file with sudo
@@ -271,12 +272,11 @@ au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 au FileType go nmap <Leader>i <Plug>(go-info)
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <Leader>l :%s/\s*q.Q(.*$\n//g<CR>
 map <C-n> :lne<CR>
 map <C-m> :lp<CR>
 "let g:go_auto_type_info = 1
 "set updatetime=100
-au FileType go iabbrev _brdoes r *http.Request, results *validation.ValidatedResults) error {<CR>
-au FileType go iabbrev _brhandler w http.ResponseWriter, r *http.Request, results *validation.ValidatedResults) (*api.Return, error) {<CR>
 let g:go_highlight_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -296,6 +296,9 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_tidy_exec = 'tidy'
 let g:syntastic_html_tidy_ignore_errors = [ 'is not recognized', 'proprietary attribute' ]
+let g:syntastic_yaml_checkers = ['yamllint']
+let g:syntastic_yaml_yamllint_quiet_messages = {"regex" : 'missing document start\|line too long\|too many spaces inside braces'}
+
 
 
 " Reccommendation of when using syntastic with vimgo to prevent lag
@@ -310,10 +313,4 @@ let g:GPGDefaultRecipients=['0x059BE1E2A99DA7EB']
 augroup GPGFile
     nmap <silent> <C-W>Q <C-W>qi
 augroup END
-
-" For working with creds file
-augroup CredFile
-      au! BufRead,BufNewFile,BufEnter creds.yml.asc nmap <Leader>o 0f:w"+y$0yt::vs ../sf-deploy-application/<C-r>".aes<CR>
-augroup END
-
 " vim: set fdm=marker:
