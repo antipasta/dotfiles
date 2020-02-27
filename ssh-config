@@ -2,7 +2,7 @@ Host *.priv.sf
   User appuser
   ConnectTimeout 30
   #ProxyCommand ssh -p2222 -o VisualHostKey=no root@localhost nc -q0 %h %p 2>/dev/null
-  ProxyCommand docker exec -i prodvpn nc -q0 %h %p 2>/dev/null
+  #ProxyCommand docker exec -i prodvpn nc -q0 %h %p 2>/dev/null
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
 
@@ -70,8 +70,8 @@ Host joe2.home.saturn.sfsrv.net
   ConnectTimeout 30
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false
-  LocalForward *:5432 pg-site.dev.saturn.sfsrv.net:5432
-  LocalForward *:7006 redis-2.dev.saturn.sfsrv.net:7006
+  #LocalForward *:5432 pg-site.dev.saturn.sfsrv.net:5432
+  #LocalForward *:7006 redis-2.dev.saturn.sfsrv.net:7006
 
 
 #Host *.saturn.sflow.us

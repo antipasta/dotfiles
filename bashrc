@@ -11,8 +11,7 @@ export HISTSIZE=30000
 export HISTTIMEFORMAT='%F %T '
 
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-#export TERM=xterm-256color
-export TERM=screen-256color
+export TERM=xterm-256color
 
 
 ## for when ssh agent gets screwy
@@ -108,15 +107,15 @@ fd() {
                                 cd "$dir"
     }
 
-if [ -x "$(command -v gpg-agent)" ]; then
-    if pgrep -x "gpg-agent" > /dev/null
-    then
-        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
-    else
-        eval $(gpg-agent --daemon --enable-ssh-support --sh)
-    fi
-fi
-
+#if [ -x "$(command -v gpg-agent)" ]; then
+#    if pgrep -x "gpg-agent" > /dev/null
+#    then
+#        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
+#    else
+#        eval $(gpg-agent --daemon --enable-ssh-support --sh)
+#    fi
+#fi
+#
 
 
 function toggle-agent {
@@ -155,3 +154,7 @@ rmqq() {
     fi
     qq
 }
+function vpnotp() {
+    ~/tmp/squashfs-root/usr/bin/keepassxc-cli show ~/dropbox/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n' | xclip -selection c
+}
+

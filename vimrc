@@ -7,6 +7,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'jamessan/vim-gnupg'
     Plug 'vim-scripts/openssl.vim'
+    Plug 'https://github.com/Alok/notational-fzf-vim'
 call plug#end()
 " }}}
 
@@ -142,6 +143,9 @@ nnoremap <silent> <F3> :exec "se rnu!"<CR>
 let mapleader = ","
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+nmap <leader>e V:s/,/,\r/g<CR>:noh<CR>
+vmap <leader>e :s/,/,\r/g<CR>:noh<CR>
 
 " Ctrl-I increments since Ctrl-A is my tmux key
 noremap <C-I> <C-A>
@@ -313,4 +317,12 @@ let g:GPGDefaultRecipients=['0x059BE1E2A99DA7EB']
 augroup GPGFile
     nmap <silent> <C-W>Q <C-W>qi
 augroup END
+
+" For working with creds file
+augroup CredFile
+      au! BufRead,BufNewFile,BufEnter creds.yml.asc nmap <Leader>o f:w"+y$0yt::vs ../sf-deploy-application/<C-r>".aes<CR>
+augroup END
+
+let g:nv_search_paths = ['~/wiki']
+
 " vim: set fdm=marker:

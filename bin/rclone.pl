@@ -6,14 +6,13 @@ use File::Path qw(make_path);
 my $json    = JSON::XS->new;
 my @remotes = qw/remote gdrive/;
 
-
 sub get_modified {
     my $file     = shift;
     my $output   = capture( "rclone", "lsjson", $file );
     my $decoded  = $json->decode($output);
     my $modified = $decoded->[0]->{ModTime};
     my $dt       = DateTime::Format::ISO8601->parse_datetime($modified);
-    return $dt->epoch;
+    return $dt;
 }
 
 sub copy_file {
@@ -30,9 +29,9 @@ for my $remote (@remotes) {
     my $remote_dir  = sprintf( "%s:keepass",       $remote );
     my $remote_path = sprintf( "%s/keepass2.kdbx", $remote_dir );
     my $remote_mod  = get_modified($remote_path);
-    my $diff        = $remote_mod - $local_mod;
+    my $diff        = $remote_mod->epoch - $local_mod->epoch;
 
-    next unless ($diff);
+    next unless (abs($diff) > 5);
     if ( $diff >= 0 ) {
         my $datestamp = capturex( "date", "+%F-%H%M%S" );
         chomp($datestamp);
@@ -41,6 +40,7 @@ for my $remote (@remotes) {
         make_path($conflict_path);
         warn
 "[$remote] WARNING: Remote file is newer than local file by $diff seconds, copying from remote to $conflict_path";
+warn "See if there were any local modifications after $remote_mod";
         my $out = copy_file( $remote_dir, $conflict_path );
         print $out . "\n";
         next;
