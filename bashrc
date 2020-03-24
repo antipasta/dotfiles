@@ -155,6 +155,7 @@ rmqq() {
     qq
 }
 function vpnotp() {
+    echo -n 'Enter keepass pw: ';
     ~/tmp/squashfs-root/usr/bin/keepassxc-cli show ~/dropbox/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n' | xclip -selection c
 }
 
