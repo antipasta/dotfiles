@@ -10,6 +10,7 @@
     uncommit = reset --soft HEAD^
     onstage = diff --staged
     currentbranch = rev-parse --abbrev-ref HEAD
+	tagrelease = !git tag -a v$(date -u +%y.%m.%d.%H%M%S) -m 'release tag'
 [rerere]
 	enabled = true
 [url "ssh://git@github.com/"]
