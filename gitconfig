@@ -1,6 +1,6 @@
 [user]
-	email = joe@socialflow.com
 	name = Joe Papperello
+	email = joeyis@gmail.com
 [color]
 	diff = auto
 	ui = true
@@ -9,9 +9,9 @@
     taghistory = log --tags --simplify-by-decoration --pretty=format:'%ai %d %an'
     uncommit = reset --soft HEAD^
     onstage = diff --staged
-    url =! bash -c 'git config --get remote.origin.url | sed -E "s/.+:\\(.+\\)\\.git$/https:\\\\/\\\\/github\\\\.com\\\\/\\\\1/g"'
     currentbranch = rev-parse --abbrev-ref HEAD
+	tagrelease = !git tag -a v$(date -u +%y.%m.%d.%H%M%S) -m 'release tag'
 [rerere]
 	enabled = true
-[url "git@github.com:"]
+[url "ssh://git@github.com/"]
 	insteadOf = https://github.com/

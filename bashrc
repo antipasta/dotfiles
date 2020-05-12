@@ -11,8 +11,7 @@ export HISTSIZE=30000
 export HISTTIMEFORMAT='%F %T '
 
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-#export TERM=xterm-256color
-export TERM=screen-256color
+export TERM=xterm-256color
 
 
 ## for when ssh agent gets screwy
@@ -25,6 +24,15 @@ if [[ -n $TMUX ]]; then
 fi
 }
 
+function vpndocker() {
+    if [[ `stat -c '%a' /dev/net/tun` == '660' ]]; then
+        docker "$@"
+    else
+        echo 'lxc config device add penguin tun unix-char path=/dev/net/tun' | xclip -selection c
+        echo 'no access to /dev/net/tun'
+    fi
+}
+
 ec2-info() {
     IP=169.254.169.254
     ssh $1 "curl -q http://$IP/latest/meta-data/$2" 2>/dev/null
@@ -32,7 +40,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-export PATH=$HOME/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$PATH 
+export PATH=$HOME/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:/usr/local/MacGPG2/bin/:/usr/local/bin/::$HOME/dotfiles/bin/:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -73,7 +81,7 @@ elif command -v ack-grep >/dev/null 2>&1; then
 fi
 [ -f /home/joe/dotfiles/additional_options ] && . /home/joe/dotfiles/additional_options
 export GOPATH=$HOME/code/go
-export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 export PERLBREW_ROOT=$HOME/perlbrew
 function refresh_gpga() {
     if [ -f "${HOME}/.gpg-agent-info" ]; then
@@ -99,15 +107,15 @@ fd() {
                                 cd "$dir"
     }
 
-if [ -x "$(command -v gpg-agent)" ]; then
-    if pgrep -x "gpg-agent" > /dev/null
-    then
-        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
-    else
-        eval $(gpg-agent --daemon --enable-ssh-support --sh)
-    fi
-fi
-
+#if [ -x "$(command -v gpg-agent)" ]; then
+#    if pgrep -x "gpg-agent" > /dev/null
+#    then
+#        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
+#    else
+#        eval $(gpg-agent --daemon --enable-ssh-support --sh)
+#    fi
+#fi
+#
 
 
 function toggle-agent {
@@ -121,3 +129,33 @@ function toggle-agent {
 
 }
 export GO111MODULE=auto
+
+qq() {
+    clear
+
+    logpath="$TMPDIR/q"
+    if [[ -z "$TMPDIR" ]]; then
+        logpath="/tmp/q"
+    fi
+
+    if [[ ! -f "$logpath" ]]; then
+        echo 'Q LOG' > "$logpath"
+    fi
+
+    tail -100f -- "$logpath"
+}
+
+rmqq() {
+    logpath="$TMPDIR/q"
+    if [[ -z "$TMPDIR" ]]; then
+        logpath="/tmp/q"
+    fi
+    if [[ -f "$logpath" ]]; then
+        rm "$logpath"
+    fi
+    qq
+}
+function vpnotp() {
+    echo -n 'Enter keepass pw: ';
+    ~/tmp/squashfs-root/usr/bin/keepassxc-cli show ~/dropbox/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n' | xclip -selection c
+}
