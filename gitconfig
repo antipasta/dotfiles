@@ -13,3 +13,5 @@
     currentbranch = rev-parse --abbrev-ref HEAD
 [rerere]
 	enabled = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/

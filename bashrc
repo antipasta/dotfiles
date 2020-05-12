@@ -120,3 +120,4 @@ function toggle-agent {
     ssh-add -l
 
 }
+export GO111MODULE=auto
