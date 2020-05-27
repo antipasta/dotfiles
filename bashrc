@@ -40,7 +40,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$PATH 
+export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$HOME/Applications/:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -157,5 +157,10 @@ rmqq() {
 }
 function vpnotp() {
     echo -n 'Enter keepass pw: ';
-    ~/tmp/squashfs-root/usr/bin/keepassxc-cli show ~/dropbox/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n' | xclip -selection c
+    printf "\033]52;c;$(echo $(KeePassXC-2.5.4-x86_64.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n')  | base64)\a"
+}
+
+function vpnconnect() {
+    echo -n 'Enter keepass pw: ';
+    KeePassXC-2.5.4-x86_64.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > ~/vpn/new-$1.tblk/Contents/Resources/creds.txt && docker start $1vpn && rm ~/vpn/new-$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
 }

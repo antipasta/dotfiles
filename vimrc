@@ -7,7 +7,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'jamessan/vim-gnupg'
     Plug 'vim-scripts/openssl.vim'
-    Plug 'https://github.com/Alok/notational-fzf-vim'
 call plug#end()
 " }}}
 
