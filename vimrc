@@ -306,11 +306,22 @@ let g:syntastic_yaml_yamllint_quiet_messages = {"regex" : 'missing document star
 
 
 
-" Reccommendation of when using syntastic with vimgo to prevent lag
-let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = []
 let g:syntastic_quiet_messages = { "regex": 'should have comment\|comment on' }
 
-let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'perl'] }
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['html', 'perl', 'go'] }
+"let g:go_fmt_command = 'gopls'
+"let g:go_imports_mode = 'gopls'
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+"et g:go_gopls_complete_unimported = 1
+let g:go_metalinter_deadline = '10s'
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_enabled = ['staticcheck']
+let g:go_metalinter_autosave_enabled = ['staticcheck']
+au FileType go nmap <leader>! <Plug>(go-metalinter)
+let g:go_list_type = "locationlist"
+
 
 "" }}}
 
