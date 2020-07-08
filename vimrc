@@ -278,6 +278,8 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <Leader>l :%s/\s*q.Q(.*$\n//g<CR>
 map <C-n> :lne<CR>
 map <C-m> :lp<CR>
+"au FileType go map <C-n> :cnext<CR>
+"au FileType go map <C-p> :cprevious<CR>
 "let g:go_auto_type_info = 1
 "set updatetime=100
 let g:go_highlight_types = 1

@@ -24,14 +24,6 @@ if [[ -n $TMUX ]]; then
 fi
 }
 
-function vpndocker() {
-    if [[ `stat -c '%a' /dev/net/tun` == '660' ]]; then
-        docker "$@"
-    else
-        echo 'lxc config device add penguin tun unix-char path=/dev/net/tun' | xclip -selection c
-        echo 'no access to /dev/net/tun'
-    fi
-}
 
 ec2-info() {
     IP=169.254.169.254
@@ -40,7 +32,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$HOME/Applications/:$PATH 
+export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:$HOME/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$HOME/Applications/:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -83,6 +75,7 @@ fi
 export GOPATH=$HOME/code/go
 export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 export PERLBREW_ROOT=$HOME/perlbrew
+
 function refresh_gpga() {
     if [ -f "${HOME}/.gpg-agent-info" ]; then
         . "${HOME}/.gpg-agent-info"
@@ -157,10 +150,10 @@ rmqq() {
 }
 function vpnotp() {
     echo -n 'Enter keepass pw: ';
-    printf "\033]52;c;$(echo $(KeePassXC-2.5.4-x86_64.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n')  | base64)\a"
+    printf "\033]52;c;$(echo $(KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n')  | base64)\a"
 }
 
 function vpnconnect() {
     echo -n 'Enter keepass pw: ';
-    KeePassXC-2.5.4-x86_64.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > ~/vpn/new-$1.tblk/Contents/Resources/creds.txt && docker start $1vpn && rm ~/vpn/new-$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
+    KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && sleep 1 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
 }
