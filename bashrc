@@ -100,16 +100,6 @@ fd() {
                                 cd "$dir"
     }
 
-#if [ -x "$(command -v gpg-agent)" ]; then
-#    if pgrep -x "gpg-agent" > /dev/null
-#    then
-#        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
-#    else
-#        eval $(gpg-agent --daemon --enable-ssh-support --sh)
-#    fi
-#fi
-#
-
 
 function toggle-agent {
     if [[ $SSH_AUTH_SOCK =~ gpg ]]

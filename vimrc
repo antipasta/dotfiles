@@ -130,16 +130,38 @@ map .# :s/^\(\s*\)#\+/\1<CR> <Esc>:noh<CR>
 " }}}
 
 
-" Function key toggles {{{
+" Paste stuff {{{
 set pastetoggle=<F1>
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
 
-"line number toggles
-nnoremap <silent> <F2> :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
-nnoremap <silent> <F3> :exec "se rnu!"<CR>
+  let tmux_start = "\<Esc>Ptmux;"
+  let tmux_end = "\<Esc>\\"
+
+  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+endfunction
+
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+
+
 " }}}
 
 " Basic key remapping {{{
 let mapleader = ","
+"line number toggles
+nnoremap <silent> <F12> :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
@@ -339,6 +361,8 @@ augroup CredFile
       au! BufRead,BufNewFile,BufEnter creds.yml.asc nmap <Leader>o f:w"+y$0yt::vs ../sf-deploy-application/<C-r>".aes<CR>
 augroup END
 
-let g:nv_search_paths = ['~/wiki']
+
+
+
 
 " vim: set fdm=marker:
