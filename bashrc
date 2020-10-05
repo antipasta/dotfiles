@@ -147,3 +147,18 @@ function vpnconnect() {
     echo -n 'Enter keepass pw: ';
     KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && sleep 1 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
 }
+
+function vssh() {
+    if [[ $@ == *mars* ]]; then
+        SF_SSH_ENVIRON=mars
+    else
+        SF_SSH_ENVIRON=saturn
+    fi
+
+    if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
+        echo "Must connect to $SF_SSH_ENVIRON..."
+        vpnconnect $SF_SSH_ENVIRON
+        sleep 10
+    fi
+    ssh $@
+}
