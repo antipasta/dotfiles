@@ -158,7 +158,9 @@ function vssh() {
     if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
         echo "Must connect to $SF_SSH_ENVIRON..."
         vpnconnect $SF_SSH_ENVIRON
-        sleep 10
     fi
-    ssh $@
+	until ssh $@; do
+	  echo Attempting SSH...
+	  sleep 1
+	done
 }
