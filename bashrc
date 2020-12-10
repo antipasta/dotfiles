@@ -77,13 +77,15 @@ export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 export PERLBREW_ROOT=$HOME/perlbrew
 
 function refresh_gpga() {
-    if [ -f "${HOME}/.gpg-agent-info" ]; then
-        . "${HOME}/.gpg-agent-info"
-        export GPG_AGENT_INFO
-        export SSH_AUTH_SOCK
-    else
-        eval $( gpg-agent --daemon --write-env-file "${HOME}/.gpg-agent-info" )
-    fi
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    gpg-connect-agent -q updatestartuptty /bye > /dev/null
+#    if [ -f "${HOME}/.gpg-agent-info" ]; then
+#        . "${HOME}/.gpg-agent-info"
+#        export GPG_AGENT_INFO
+#        export SSH_AUTH_SOCK
+#    else
+#        eval $( gpg-agent --daemon --write-env-file "${HOME}/.gpg-agent-info" )
+#    fi
 }
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
@@ -104,12 +106,12 @@ fd() {
 function toggle-agent {
     if [[ $SSH_AUTH_SOCK =~ gpg ]]
     then
-        export SSH_AUTH_SOCK=$(ls /private/tmp/com.apple.launchd.*/Listeners )
+        #export SSH_AUTH_SOCK=$(ls /private/tmp/com.apple.launchd.*/Listeners )
+        export SSH_AUTH_SOCK=$(ls /tmp/ssh-*/agent.* )
     else
-        export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
+        refresh_gpga
     fi
     ssh-add -l
-
 }
 export GO111MODULE=auto
 
@@ -154,13 +156,22 @@ function vssh() {
     else
         SF_SSH_ENVIRON=saturn
     fi
+    if [[ $(gpg --card-status) ]]; then
+        refresh_gpga
+    else
+        ssh-add -q ~/.ssh/*.secret
+    fi
 
     if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
         echo "Must connect to $SF_SSH_ENVIRON..."
         vpnconnect $SF_SSH_ENVIRON
     fi
 	until ssh $@; do
-	  echo Attempting SSH...
-	  sleep 1
+        if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
+            echo "Must connect to $SF_SSH_ENVIRON..."
+            vpnconnect $SF_SSH_ENVIRON
+        fi
+        echo Attempting SSH...
+        sleep 1
 	done
 }
