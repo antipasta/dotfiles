@@ -125,6 +125,7 @@ map ,/ :s/^/\/\//<CR> <Esc>:noh<CR>
 map ./ :s/^\/\///<CR> <Esc>:noh<CR>
 map ,# :s/^/#/<CR> <Esc>:noh<CR>
 map .# :s/^\(\s*\)#\+/\1<CR> <Esc>:noh<CR>
+vmap ,, :s/^/'/g<CR> :s/\r$/',/g<CR><Esc>:noh<CR>
 " }}}
 
 " }}}
@@ -206,8 +207,11 @@ map <C-j> :tabprev<CR>
 " }}}
 
 "shortcut for quoting and comma separating items
-vmap <Leader>, :s/,/,\r/g<CR><Esc>:noh<CR>
-nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+"vmap <Leader>, :s/,/,\r/g<CR><Esc>:noh<CR>
+"nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>
+nmap <Leader>, :s/\v(\w+)/'\1',/g<CR><Esc>:noh<CR>$x
+vmap <Leader>, :%s/\v(\w+)\n/'\1',/g<CR><Esc>:noh<CR>$x
+nmap <Leader>, :%s/\v(\w+)\n/'\1',/g<CR><Esc>:noh<CR>$x
 nmap <Leader>= [[V%=
 
 " }}}

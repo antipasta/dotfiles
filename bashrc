@@ -59,7 +59,7 @@ export PYTHONPATH=~/python/
 
 
 alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
-alias sfcpanm='cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
+alias sfcpanm='HTTP_PROXY=http://localhost:3128 cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
 alias bump='perl-reversion --bump '
 alias vi='vim -p'
 alias lessr='less -R'
@@ -147,7 +147,25 @@ function vpnotp() {
 
 function vpnconnect() {
     echo -n 'Enter keepass pw: ';
-    KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && sleep 1 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
+    KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && sleep 5 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
+    # KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && docker logs -f $1 && echo "connected to $1"
+}
+
+function bwvpnconnect() {
+    if [[ $BW_SESSION = "" ]]; then
+        BW_SESSION=$(bw unlock --raw)
+    fi
+    echo $(bw get username $1) > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
+    VPNPASS=$(bw get password $1) 
+    VPNOTP=$(bw get totp $1)
+    echo "$VPNPASS$VPNOTP" >> $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
+    docker start $1 && sleep 1 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
+}
+
+function sfvpn() {
+    BW_SESSION=$(bw unlock --raw)
+    BW_SESSION=$BW_SESSION bwvpnconnect mars
+    BW_SERSSION=$BW_SESSION bwvpnconnect saturn
 }
 
 function vssh() {
@@ -156,11 +174,11 @@ function vssh() {
     else
         SF_SSH_ENVIRON=saturn
     fi
-    if [[ $(gpg --card-status) ]]; then
-        refresh_gpga
-    else
+#    if [[ $(gpg --card-status ) ]]; then
+#        refresh_gpga
+#    else
         ssh-add -q ~/.ssh/*.secret
-    fi
+#    fi
 
     if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
         echo "Must connect to $SF_SSH_ENVIRON..."
@@ -175,3 +193,5 @@ function vssh() {
         sleep 1
 	done
 }
+
+alias sfssh='vssh -A $(sf-deploy.pl -c $(fdfind --type directory "prod|dev" $HOME/release/sf-deploy-application/application | fzf) --print_host)'
