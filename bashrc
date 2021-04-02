@@ -32,7 +32,7 @@ ec2-info() {
 }
 export EDITOR=vim
 export GOPATH=$HOME/code/go
-export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:$HOME/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$HOME/Applications/:$PATH 
+export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:$HOME/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/2.7/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$HOME/Applications/:/opt/homebrew/bin:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
 function github() {
     git clone git@github.com:SocialFlowDev/$1.git
@@ -152,20 +152,17 @@ function vpnconnect() {
 }
 
 function bwvpnconnect() {
-    if [[ $BW_SESSION = "" ]]; then
-        BW_SESSION=$(bw unlock --raw)
-    fi
-    echo $(bw get username $1) > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
-    VPNPASS=$(bw get password $1) 
+    echo $(bw get username "$1.vpn") > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
+    VPNPASS=$(bw get password "$1.vpn") 
     VPNOTP=$(bw get totp $1)
     echo "$VPNPASS$VPNOTP" >> $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
     docker start $1 && sleep 1 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
 }
 
 function sfvpn() {
-    BW_SESSION=$(bw unlock --raw)
-    BW_SESSION=$BW_SESSION bwvpnconnect mars
-    BW_SERSSION=$BW_SESSION bwvpnconnect saturn
+    local bw_session=$(bw unlock --raw)
+    BW_SESSION=$bw_session bwvpnconnect mars
+    BW_SESSION=$bw_session bwvpnconnect saturn
 }
 
 function vssh() {
