@@ -43,7 +43,7 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n\n#+roam_tags: journal\n\n")))
+         :head "#+title: %<%Y-%m-%d>\n\n#+roam_tags: journal\n\n* Tasks\n** Personal [0/0]\n** Work [0/0] :work:\n")))
 
 ; set closed time on todo close
 (setq org-log-done 'time)
@@ -73,6 +73,7 @@
   (+workspace/new)
   (+workspace/rename "today")
   (org-roam-dailies-find-today)
+  (save-buffer)
   (split-window-vertically)
   (other-window 1)
   (org-roam-dailies-find-previous-note 1)
@@ -81,8 +82,18 @@
   (previous-window-any-frame))
 ; custom todo states (not working)
 (after! org
-(setq org-todo-keywords
-      '((sequence "TODO" "[ ]" "NEXT" "DOING" "WAITING" "DONE" "PROJ" "|" "DONE" "[X]"))))
+    (setq org-todo-keywords
+        '(
+          (sequence "TODO(t)" "NEXT(n)" "DOING(s)" "WAITING(w)" "PROJ(p)" "|" "DONE(d)")
+          (sequence "[ ]" "|" "[X]")
+          )
+        org-todo-keyword-faces
+        '(("[-]"  . +org-todo-active)
+          ("DOING" . +org-todo-active)
+          ("WAITING" . +org-todo-onhold)
+          ("KILL" . +org-todo-cancel)))
+
+)
 
 #+END_SRC
 

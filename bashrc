@@ -192,3 +192,7 @@ function vssh() {
 }
 
 alias sfssh='vssh -A $(sf-deploy.pl -c $(fdfind --type directory "prod|dev" $HOME/release/sf-deploy-application/application | fzf) --print_host)'
+
+if [[ $(gpg --card-status ) ]]; then
+        refresh_gpga
+fi
