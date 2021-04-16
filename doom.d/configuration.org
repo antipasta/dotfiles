@@ -126,8 +126,6 @@
 
 
 
-; no idea?
-(define-key evil-normal-state-map "?" 'evil-search-backward)
 
 
 ; <leader>x instead of alt-M x to get to emacs command mode
