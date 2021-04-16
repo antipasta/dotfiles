@@ -161,8 +161,8 @@ function bwvpnconnect() {
 
 function sfvpn() {
     local bw_session=$(bw unlock --raw)
-    BW_SESSION=$bw_session bwvpnconnect mars
-    BW_SESSION=$bw_session bwvpnconnect saturn
+    BW_SESSION=$bw_session bwvpnconnect mars &
+    BW_SESSION=$bw_session bwvpnconnect saturn 
 }
 
 function vssh() {
