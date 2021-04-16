@@ -1,13 +1,7 @@
 #+TITLE: Config
+#+PROPERTY: header-args :results silent
+#+STARTUP: overview
 
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
 * Theme
 #+BEGIN_SRC emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -26,7 +20,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-homage-black)
 #+END_SRC
 
 * Org mode
@@ -37,6 +32,19 @@
 ;(setq org-roam-directory "~/orgroam/")
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
+(setq org-roam-buffer-width 0.15)
+(setq org-capture-templates
+    '(("t" "Todo" entry (file+headline "~/org/roam/orgzly/inbox.org" "Tasks")
+       "* TODO %?" :empty-lines 0)
+      ("T" "Todo with Clipboard" entry (file+headline "~/org/roam/orgzly/inbox.org" "Tasks")
+       "* TODO %?\n   %c" :empty-lines 0)
+      ("n" "Note" entry (file+headline "~/org/roam/orgzly/inbox.org" "Notes")
+       "* %?" :empty-lines 0)
+      ("N" "Note with Clipboard" entry (file+headline "~/org/roam/orgzly/inbox.org" "Notes")
+       "* %?\n   %c" :empty-lines 0)
+    ))
+
+
 
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry
@@ -110,6 +118,13 @@
 (evil-define-key 'normal org-mode-map
   ";" #'evil-ex)
 
+(global-set-key
+  (kbd "M-p") 'org-roam-find-file)
+
+(global-set-key
+  (kbd "s-p") 'org-roam-find-file)
+
+
 
 ; no idea?
 (define-key evil-normal-state-map "?" 'evil-search-backward)
@@ -120,6 +135,11 @@
       :desc "Execute Extended command" "x" #'execute-extended-command)
 
 (setq doom-leader-key ",")
+(setq doom-leader-alt-key "M-,")
+
+; not sure when localleader is used...
+(setq doom-localleader-key ", m")
+(setq doom-localleader-alt-key "M-, m")
 
 ; external keyboard alt key as meta
 (cond (IS-MAC
