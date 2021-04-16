@@ -42,6 +42,19 @@
        "* %?\n   %c" :empty-lines 0)
     ))
 
+(defun my-org-roam-dailies-split-today ()
+  "Split today function"
+  (interactive)
+  (+workspace/new)
+  (+workspace/rename "today")
+  (org-roam-dailies-find-today)
+  (save-buffer)
+  (split-window-vertically)
+  (other-window 1)
+  (org-roam-dailies-find-previous-note 1)
+  (goto-line 5)
+  (fit-window-to-buffer)
+  (previous-window-any-frame))
 
 
 (setq org-roam-dailies-capture-templates
@@ -70,19 +83,6 @@
 (setq org-log-done 'time)
 
 
-(defun my-org-roam-dailies-split-today ()
-  "Split today function"
-  (interactive)
-  (+workspace/new)
-  (+workspace/rename "today")
-  (org-roam-dailies-find-today)
-  (save-buffer)
-  (split-window-vertically)
-  (other-window 1)
-  (org-roam-dailies-find-previous-note 1)
-  (goto-line 5)
-  (fit-window-to-buffer)
-  (previous-window-any-frame))
 ; custom todo states
 (after! org
     (setq org-todo-keywords
