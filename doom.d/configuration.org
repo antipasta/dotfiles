@@ -25,11 +25,9 @@
 #+END_SRC
 
 * Org mode
+** Daily Journals
 #+BEGIN_SRC emacs-lisp
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-;(setq org-roam-directory "~/orgroam/")
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
 (setq org-roam-buffer-width 0.15)
@@ -52,11 +50,6 @@
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
          :head "#+title: %<%Y-%m-%d>\n\n#+roam_tags: journal\n\n* Tasks\n** Personal [0/0]\n** Work [0/0] :work:\n")))
-
-; set closed time on todo close
-(setq org-log-done 'time)
-
-
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -69,11 +62,13 @@
        :desc "Go to today and yesterday's entries" "T" 'my-org-roam-dailies-split-today
        :desc "Find date" "f" #'org-roam-dailies-find-date))
 
+#+END_SRC
 
-(defun myblah-org-roam-dailies-today ()
-   (let ((split-width-threshold 0)
-         (split-height-threshold nil))
-     (org-roam-dailies-capture-today)))
+** todo settings
+#+BEGIN_SRC emacs-lisp
+; set closed time on todo close
+(setq org-log-done 'time)
+
 
 (defun my-org-roam-dailies-split-today ()
   "Split today function"
@@ -104,11 +99,6 @@
 )
 
 #+END_SRC
-
-
-
-
-
 * Evil mode
 #+BEGIN_SRC emacs-lisp
 ; lets me use ; instead of : to enter vim command mode
@@ -121,11 +111,8 @@
 (global-set-key
   (kbd "M-p") 'org-roam-find-file)
 
-(global-set-key
-  (kbd "s-p") 'org-roam-find-file)
-
-
-
+;(global-set-key
+;  (kbd "s-p") 'org-roam-find-file)
 
 
 ; <leader>x instead of alt-M x to get to emacs command mode
