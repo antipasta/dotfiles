@@ -27,20 +27,24 @@
 * Org mode
 ** Daily Journals
 #+BEGIN_SRC emacs-lisp
+
+(setq org-books-file "~/org/roam/20210417225225-books.org")
 (setq org-directory "~/org/")
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
 (setq org-roam-buffer-width 0.15)
 (setq org-capture-templates
-    '(("t" "Todo" entry (file+headline "~/org/roam/orgzly/inbox.org" "Tasks")
+    '(("t" "Todo" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?" :empty-lines 0)
-      ("T" "Todo with Clipboard" entry (file+headline "~/org/roam/orgzly/inbox.org" "Tasks")
+      ("T" "Todo with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\n   %c" :empty-lines 0)
-      ("n" "Note" entry (file+headline "~/org/roam/orgzly/inbox.org" "Notes")
+      ("n" "Note" entry (file "~/org/roam/synced/inbox.org")
        "* %?" :empty-lines 0)
-      ("N" "Note with Clipboard" entry (file+headline "~/org/roam/orgzly/inbox.org" "Notes")
+      ("N" "Note with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* %?\n   %c" :empty-lines 0)
     ))
+(setq org-agenda-window-setup 'other-window)
+
 
 (defun my-org-roam-dailies-split-today ()
   "Split today function"
@@ -55,6 +59,8 @@
   (goto-line 5)
   (fit-window-to-buffer)
   (previous-window-any-frame))
+
+(setq org-archive-location "~/org/roam/archive.org::")
 
 
 (setq org-roam-dailies-capture-templates
@@ -73,7 +79,7 @@
        :desc "Go to previous journal entry" "j" #'org-roam-dailies-find-previous-note
        :desc "Go to next journal entry" "k" #'org-roam-dailies-find-next-note
        :desc "Go to today and yesterday's entries" "T" 'my-org-roam-dailies-split-today
-       :desc "Find date" "f" #'org-roam-dailies-find-date))
+       :desc "Find date" "d" #'org-roam-dailies-find-date))
 
 #+END_SRC
 
