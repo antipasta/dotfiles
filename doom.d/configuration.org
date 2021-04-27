@@ -42,6 +42,8 @@
        "* %?" :empty-lines 0)
       ("N" "Note with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* %?\n   %c" :empty-lines 0)
+       ("l" "Link" entry (file+headline "~/org/roam/20210402090030-links.org" "Personal")
+	   "* [[%c][%?]]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 0)
     ))
 (setq org-agenda-window-setup 'other-window)
 
@@ -68,7 +70,7 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n\n#+roam_tags: journal\n\n* Tasks\n** Personal [0/0]\n** Work [0/0] :work:\n")))
+         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Tasks\n** Personal [0/0]\n** Work [0/0] :work:\n")))
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -104,6 +106,19 @@
 
 )
 
+#+END_SRC
+** shortcuts
+#+BEGIN_SRC emacs-lisp
+(after! org-roam
+        (map! :leader
+            :prefix "n"
+            ;;:desc "org-roam" "l" #'org-roam
+           ;; :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+            ;;:desc "org-roam-show-graph" "g" #'org-roam-show-graph
+            :desc "org-roam-insert" "i" #'org-roam-insert
+            :desc "org-roam-toggle-buffer-display" "b" #'org-roam-buffer-toggle-display
+            :desc "org-roam-find-file" "f" #'org-roam-find-file
+            :desc "org-roam-capture" "c" #'org-roam-capture))
 #+END_SRC
 * Evil mode
 #+BEGIN_SRC emacs-lisp
@@ -170,6 +185,9 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+
+
 #+END_SRC
 
 ** Set name
