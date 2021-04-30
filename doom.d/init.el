@@ -14,6 +14,11 @@
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
 
+
+;; C-u is the emacs prefix key, so remove the doom mapping since i never use these
+(setq evil-want-C-u-scroll nil
+      evil-want-C-d-scroll nil)
+
 (doom! :input
        ;;chinese
        ;;japanese
@@ -147,6 +152,8 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org +roam +pretty)               ; organize your plain life in plain text
+       org-books
+       org-super-agenda
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional

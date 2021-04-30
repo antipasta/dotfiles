@@ -122,6 +122,8 @@
 #+END_SRC
 * Evil mode
 #+BEGIN_SRC emacs-lisp
+(setq evil-want-C-u-scroll nil
+      evil-want-C-d-scroll nil)
 ; lets me use ; instead of : to enter vim command mode
 (evil-define-key 'motion 'global
   ";" #'evil-ex)
@@ -129,11 +131,9 @@
 (evil-define-key 'normal org-mode-map
   ";" #'evil-ex)
 
+
 (global-set-key
   (kbd "M-p") 'org-roam-find-file)
-
-;(global-set-key
-;  (kbd "s-p") 'org-roam-find-file)
 
 
 ; <leader>x instead of alt-M x to get to emacs command mode
@@ -194,4 +194,115 @@
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Joe Papperello"
       user-mail-address "joe@doe.com")
+#+END_SRC
+
+* Super agenda
+(use-package! org-super-agenda
+  :after org-agenda
+  :config
+  (general-evil-
+  (setq org-super-agenda-groups
+        '(
+         (:name "Today"  ; Optionally specify section name
+                :time-grid t  ; Items that appear on the time grid
+                :todo "DOING")  ; Items that have this TODO keyword
+         (:name "DOING"  ; Optionally specify section name
+                :todo "DOING")  ; Items that have this TODO keyword
+         (:name "Home"  ; Optionally specify section name
+                :tag "home")  ; Items that have this TODO keyword
+         (:name "Work"  ; Optionally specify section name
+                :tag "work")  ; Items that have this TODO keyword
+         ))
+  (org-super-agenda-mode))
+
+         (:name "Home"  ; Optionally specify section name
+                :tag "home")  ; Items that have this TODO keyword
+         (:name "Work"  ; Optionally specify section name
+                :tag "work")  ; Items that have this TODO keyword
+
+#+BEGIN_SRC emacs-lisp
+(setq org-tag-alist '(("work" . ?w) ("home" . ?h)))
+
+
+(general-evil-define-key 'normal org-agenda-mode-map
+                "p" 'org-agenda-filter-by-tag
+                )
+
+(use-package! org-super-agenda
+  :after org-agenda
+  :init
+  (setq org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-block-separator nil
+      org-agenda-compact-blocks t
+      org-agenda-start-day nil ;; i.e. today
+      org-agenda-span 1
+      org-agenda-start-on-weekday nil)
+  (setq org-agenda-custom-commands
+        '(
+          ("c" "Super view"
+           ((agenda "" ((org-agenda-overriding-header "")
+                        (org-super-agenda-groups
+                         '(
+                           (:name "Today"
+                                  :time-grid t
+                                  :date today
+                                  :order 1)
+                            (:name "Upcoming Deadlines"
+                                   :deadline future
+                                   :order 100)
+                           ))
+                        ))
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (:scheduled today :deadline today))
+                            (:name "Doing"
+                                   :todo "DOING")
+                            (:name "Next"
+                                   :todo "NEXT"
+                                   :order 1)
+                            (:name "Scheduled Soon"
+                                   :scheduled future
+                                   :order 8)
+                            (:name "Journal"
+                                   :file-path "daily/")
+                            (:name "Overdue"
+                                   :deadline past
+                                   :order 7)
+                            (:name "Inbox"
+                                   :file-path "synced/inbox\\.org")
+                            (:name "Waiting"
+                                   :todo "WAITING"
+                                   :order 10)
+         (:discard (:deadline future :deadline today :deadline past :scheduled future :scheduled today :scheduled past))
+        (:discard (:anything))
+                            (:discard (:not (:todo "TODO")))))))))
+                    ("h" "Home"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+        (:name "Home"  ; Optionally specify section name
+                :tag "home")  ; Items that have this TODO keyword
+        (:discard (:anything))
+
+
+                            (:discard (:not (:todo "TODO")))))))))
+                    ("w" "Work"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+        (:name "Work"  ; Optionally specify section name
+                :tag "work")  ; Items that have this TODO keyword
+        (:discard (:anything))
+
+
+                            (:discard (:not (:todo "TODO")))))))))
+
+          ))
+  :config
+  (org-super-agenda-mode))
 #+END_SRC
