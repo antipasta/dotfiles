@@ -25,14 +25,23 @@
 #+END_SRC
 
 * Org mode
-** Daily Journals
+** Windowing
 #+BEGIN_SRC emacs-lisp
 
-(setq org-books-file "~/org/roam/20210417225225-books.org")
+(setq org-roam-buffer-width 0.15)
+(setq org-agenda-window-setup 'other-window)
+; maximize on startup
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+#+END_SRC
+** Directory/Files
+#+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/")
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
-(setq org-roam-buffer-width 0.15)
+(setq org-archive-location "~/org/roam/archive.org::")
+#+END_SRC
+** Capture
+#+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
     '(("t" "Todo" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?" :empty-lines 0)
@@ -45,7 +54,9 @@
        ("l" "Link" entry (file+headline "~/org/roam/20210402090030-links.org" "Personal")
 	   "* [[%c][%?]]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 0)
     ))
-(setq org-agenda-window-setup 'other-window)
+#+END_SRC
+** Daily Journals
+#+BEGIN_SRC emacs-lisp
 
 
 (defun my-org-roam-dailies-split-today ()
@@ -55,6 +66,7 @@
   (+workspace/rename "today")
   (org-roam-dailies-find-today)
   (save-buffer)
+  (org-agenda-file-to-front)
   (split-window-vertically)
   (other-window 1)
   (org-roam-dailies-find-previous-note 1)
@@ -62,7 +74,6 @@
   (fit-window-to-buffer)
   (previous-window-any-frame))
 
-(setq org-archive-location "~/org/roam/archive.org::")
 
 
 (setq org-roam-dailies-capture-templates
@@ -70,7 +81,7 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Tasks\n** Personal [0/0]\n** Work [0/0] :work:\n")))
+         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -160,8 +171,6 @@
 
 (map! "C-k" #'+workspace/switch-right)
 (map! "C-j" #'+workspace/switch-left)
-; maximize on startup
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 
 #+END_SRC
@@ -201,7 +210,7 @@
 
 * Super agenda
 #+BEGIN_SRC emacs-lisp
-(setq org-tag-alist '(("work" . ?w) ("home" . ?h)))
+(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b)))
 
 (use-package! org-super-agenda
   :after org-agenda
