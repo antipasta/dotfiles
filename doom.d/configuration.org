@@ -132,7 +132,10 @@
             :desc "org-roam-insert" "i" #'org-roam-insert
             :desc "org-roam-toggle-buffer-display" "b" #'org-roam-buffer-toggle-display
             :desc "org-roam-find-file" "f" #'org-roam-find-file
-            :desc "org-roam-capture" "c" #'org-roam-capture))
+            :desc "org-roam-capture" "c" #'org-roam-capture)
+        (map! :leader
+              :desc "org-refile" "r" #'org-refile)
+        )
 #+END_SRC
 * Evil mode
 #+BEGIN_SRC emacs-lisp
