@@ -137,6 +137,24 @@
               :desc "org-refile" "r" #'org-refile)
         )
 #+END_SRC
+
+*** Org abbreviation
+#+BEGIN_SRC emacs-lisp
+(define-skeleton skel-org-block
+  "Insert an org block, querying for type."
+  "Type: "
+  "#+BEGIN_SRC emacs-lisp"  "\n"
+  _ - \n
+  "#+END_SRC"  "\n")
+
+  (define-abbrev org-mode-abbrev-table "blk" "" 'skel-org-block)
+#+END_SRC
+
+
+
+
+
+
 * Evil mode
 #+BEGIN_SRC emacs-lisp
 (setq evil-want-C-u-scroll nil
@@ -224,7 +242,7 @@
       org-agenda-block-separator nil
       org-agenda-compact-blocks t
       org-agenda-start-day nil ;; i.e. today
-      org-agenda-sorting-strategy '(todo-state-down)
+      org-agenda-sorting-strategy '(time-up todo-state-down)
       org-agenda-span 1
       org-agenda-start-on-weekday nil)
   (setq org-agenda-custom-commands
