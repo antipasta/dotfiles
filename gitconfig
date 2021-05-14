@@ -15,3 +15,6 @@
 	enabled = true
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+[include]
+  # For username / creds / etc
+  path = ~/.gitconfig.local
