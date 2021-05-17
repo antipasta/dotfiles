@@ -20,7 +20,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-molokai)
+(setq doom-theme 'doom-molokaimod)
 
 #+END_SRC
 
@@ -81,7 +81,7 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
+         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Read/Watch/Listen\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -197,6 +197,9 @@
 #+END_SRC
 * Misc
 #+BEGIN_SRC emacs-lisp
+;; revert files automatically if theyve been modified outside of emacs
+(global-auto-revert-mode 1)
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
