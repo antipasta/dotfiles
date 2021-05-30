@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 export HOME=/home/joe/
 cd $HOME/org
 git add .
