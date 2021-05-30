@@ -91,6 +91,8 @@
        :desc "Go to tomorrow's journal entry" "o" #'org-roam-dailies-find-tomorrow
        :desc "Go to previous journal entry" "j" #'org-roam-dailies-find-previous-note
        :desc "Go to next journal entry" "k" #'org-roam-dailies-find-next-note
+       :desc "Go to previous journal entry" "[" #'org-roam-dailies-find-previous-note
+       :desc "Go to next journal entry" "]" #'org-roam-dailies-find-next-note
        :desc "Go to today and yesterday's entries" "T" 'my-org-roam-dailies-split-today
        :desc "Find date" "d" #'org-roam-dailies-find-date))
 
@@ -181,6 +183,8 @@
 ; not sure when localleader is used...
 (setq doom-localleader-key ", m")
 (setq doom-localleader-alt-key "M-, m")
+(evil-ex-define-cmd "vsp" 'split-and-select)
+
 
 ; external keyboard alt key as meta
 (cond (IS-MAC
@@ -294,4 +298,20 @@
           ))
   :config
   (org-super-agenda-mode))
+#+END_SRC
+
+* Oneoff
+#+BEGIN_SRC emacs-lisp
+
+(defun split-and-select()
+  "Split and ctrl-p"
+  (interactive)
+  (when (= (length (window-list)) 1)
+  (split-window-right))
+  (other-window 1)
+  (org-roam-find-file)
+  )
+
+
+
 #+END_SRC
