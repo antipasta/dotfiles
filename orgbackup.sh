@@ -1,5 +1,5 @@
 #!/bin/bash
-export HOME=/home/joe/
+export HOME=/Users/joe/
 cd $HOME/org
 git add .
 git commit -m 'v'

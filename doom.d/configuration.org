@@ -25,13 +25,43 @@
 #+END_SRC
 
 * Org mode
+(use-package! display-line-numbers
+
+   :ensure nil
+
+   :hook ((text-mode . display-line-numbers-mode)
+
+       (prog-mode . display-line-numbers-mode)
+
+       (conf-mode . display-line-numbers-mode)
+       (org-mode  lambda () (display-line-numbers-mode -1)) ))
 ** Windowing
 #+BEGIN_SRC emacs-lisp
+(setq global-display-line-numbers-mode nil)
+
+(defun lines-on ()
+  (setq display-line-numbers-type t)
+  (setq display-line-numbers t)
+  (display-line-numbers-mode t))
+
+(defun lines-off ()
+  (setq display-line-numbers-type nil)
+  (setq display-line-numbers nil)
+  (display-line-numbers-mode nil))
+
+(add-hook 'prog-mode-hook (lambda () (lines-on)))
+(add-hook 'text-mode-hook (lambda () (lines-on)))
+(add-hook 'org-mode-hook (lambda () (lines-off)))
 
 (setq org-roam-buffer-width 0.15)
+
 (setq org-agenda-window-setup 'other-window)
 ; maximize on startup
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(setq org-roam-buffer-window-parameters '(
+                                            (setq display-line-numbers-type nil)
+  (setq display-line-numbers nil)
+					  ))
 #+END_SRC
 ** Directory/Files
 #+BEGIN_SRC emacs-lisp
@@ -39,6 +69,20 @@
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
 (setq org-archive-location "~/org/roam/archive.org::")
+(defun +org/opened-buffer-files ()
+  "Return the list of files currently opened in emacs"
+  (delq nil
+        (mapcar (lambda (x)
+                  (if (and (buffer-file-name x)
+                           (string-match "\\.org$"
+                                         (buffer-file-name x)))
+                      (buffer-file-name x)))
+                (buffer-list))))
+
+(setq org-refile-targets '(
+                           (+org/opened-buffer-files :maxlevel . 3)
+                           (org-agenda-files :maxlevel . 4)
+                           ))
 #+END_SRC
 ** Capture
 #+BEGIN_SRC emacs-lisp
@@ -137,6 +181,7 @@
             :desc "org-roam-capture" "c" #'org-roam-capture)
         (map! :leader
               :desc "org-refile" "r" #'org-refile)
+
         )
 #+END_SRC
 
@@ -311,6 +356,9 @@
   (other-window 1)
   (org-roam-find-file)
   )
+
+
+
 
 
 
