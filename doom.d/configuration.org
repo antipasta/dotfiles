@@ -69,6 +69,14 @@
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
 (setq org-archive-location "~/org/roam/archive.org::")
+(defun newer-than-30-days(file)
+  (> 7
+     (/(float-time(time-subtract
+                   (current-time )
+                   (nth 5 (file-attributes file)) ))
+       86400)))
+
+
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
   (delq nil
@@ -88,7 +96,7 @@
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
     '(("t" "Todo" entry (file "~/org/roam/synced/inbox.org")
-       "* TODO %?" :empty-lines 0)
+       "* TODO %?\n/created/ %U" :empty-lines 0)
       ("T" "Todo with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\n   %c" :empty-lines 0)
       ("n" "Note" entry (file "~/org/roam/synced/inbox.org")
@@ -99,6 +107,15 @@
 	   "* [[%c][%?]]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 0)
     ))
 #+END_SRC
+** Visibility
+org mode seems to ignore my per-headline visibility properties unless this is set?
+
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-folded 'showall)
+
+#+END_SRC
+
+
 ** Daily Journals
 #+BEGIN_SRC emacs-lisp
 
@@ -110,7 +127,7 @@
   (+workspace/rename "today")
   (org-roam-dailies-find-today)
   (save-buffer)
-  (org-agenda-file-to-front)
+;  (org-agenda-file-to-front)
   (split-window-vertically)
   (other-window 1)
   (org-roam-dailies-find-previous-note 1)
@@ -125,7 +142,7 @@
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Read/Watch/Listen\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
+         :head "#+title: %<%Y-%m-%d>\n#+startup: showall\n#+roam_tags: journal\n\n* Thoughts\n\n* Read/Watch/Listen/Consume\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -297,6 +314,13 @@
       org-agenda-sorting-strategy '(time-up todo-state-down)
       org-agenda-span 1
       org-agenda-start-on-weekday nil)
+  (setq org-agenda-files
+    (delq nil (delete-dups (append
+       (org-agenda-files)
+      (seq-filter #'newer-than-30-days
+                  (directory-files-recursively "~/org/roam/daily/" "\\.org$"))
+
+      ))))
   (setq org-agenda-custom-commands
         '(
           ("c" "Super view"
@@ -336,10 +360,8 @@
                                    :order 10)
          (:discard (:deadline future :deadline today :deadline past :scheduled future :scheduled today :scheduled past))
         (:discard (:anything))
-                            (:discard (:not (:todo "TODO")))))))))
-
-
-
+                            (:discard (:not (:todo "TODO"))))))))
+           )
           ))
   :config
   (org-super-agenda-mode))
@@ -358,7 +380,21 @@
   )
 
 
+;; Save the corresponding buffers immediately after a refile
+(defun gtd-save-org-buffers ()
+  "Save `org-agenda-files' buffers without user confirmation.
+See also `org-save-all-org-buffers'"
+  (interactive)
+  (message "Saving org-agenda-files buffers...")
+  (save-some-buffers t (lambda ()
+             (when (member (buffer-file-name) org-agenda-files)
+               t)))
+  (message "Saving org-agenda-files buffers... done"))
 
+;; Add it after refile
+(advice-add 'org-refile :after
+        (lambda (&rest _)
+          (gtd-save-org-buffers)))
 
 
 
