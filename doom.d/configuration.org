@@ -63,6 +63,26 @@
   (setq display-line-numbers nil)
 					  ))
 #+END_SRC
+** Navigating notes
+#+BEGIN_SRC emacs-lisp
+(defun my/navigate-note (arg &optional note choices)
+  "Navigate notes by link. With universal ARG tries to use only to navigate the tags of the current note. Optionally takes a selected NOTE and filepaths CHOICES."
+  (interactive "P")
+  (let* ((choices (or
+                   choices
+                   (when arg (org-roam-db--links-with-max-distance (buffer-file-name) 1))))
+         (all-notes (org-roam--get-title-path-completions))
+         (completions
+          (or (--filter (-contains-p choices (plist-get (cdr it) :path)) all-notes) all-notes))
+         (title-with-tags (org-roam-completion--completing-read "File: " completions))
+         (res (cdr (assoc title-with-tags completions)))
+         (next-note (plist-get res :path)))
+    (if (string= note next-note)
+        (find-file note)
+      (my/navigate-note nil next-note (org-roam-db--links-with-max-distance next-note 1)))))
+
+#+END_SRC
+
 ** Directory/Files
 #+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/")
@@ -142,7 +162,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n#+startup: showall\n#+roam_tags: journal\n\n* Thoughts\n\n* Read/Watch/Listen/Consume\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
+         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Read/Watch/Listen/Consume\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -300,7 +320,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 
 * Super agenda
 #+BEGIN_SRC emacs-lisp
-(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b)))
+(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s)))
 
 (use-package! org-super-agenda
   :after org-agenda
