@@ -12,8 +12,6 @@
  '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(objed-cursor-color "#ff6c6b")
- '(org-agenda-files
-   '("~/org/roam/synced/20210403104611-tasks.org" "~/org/roam/20210402090030-links.org" "~/code/cal2org/calendars/work.org" "~/code/cal2org/calendars/ej.org" "~/code/cal2org/calendars/joeyis.org" "~/org/roam/20210331094749-emacs_setup.org" "~/org/roam/synced/inbox.org" ))
  '(pdf-view-midnight-colors (cons "#bbc2cf" "#282c34"))
  '(rustic-ansi-faces
    ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
