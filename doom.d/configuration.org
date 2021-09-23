@@ -62,6 +62,23 @@
                                             (setq display-line-numbers-type nil)
   (setq display-line-numbers nil)
 					  ))
+
+
+; toggle horizontal to vertical
+(defun window-split-toggle ()
+  "Toggle between horizontal and vertical split with two windows."
+  (interactive)
+  (if (> (length (window-list)) 2)
+      (error "Can't toggle with more than 2 windows!")
+    (let ((func (if (window-full-height-p)
+                    #'split-window-vertically
+                  #'split-window-horizontally)))
+      (delete-other-windows)
+      (funcall func)
+      (save-selected-window
+        (other-window 1)
+        (switch-to-buffer (other-buffer))))))
+
 #+END_SRC
 ** Navigating notes
 #+BEGIN_SRC emacs-lisp
@@ -161,8 +178,10 @@ org mode seems to ignore my per-headline visibility properties unless this is se
       '(("d" "default" entry
          #'org-roam-capture--get-point
          "* %?"
+         :head "%[templates/daily.tmpl]"
          :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n#+roam_tags: journal\n\n* Thoughts\n\n* Read/Watch/Listen/Consume\n\n* Agenda\n** Personal [0/0]\n** Work [0/0] :work:\n")))
+         )))
+
 ; some journaling shortcuts i stole from someplace
 (map! :leader
       (:prefix-map ("j" . "journal")
@@ -215,7 +234,8 @@ org mode seems to ignore my per-headline visibility properties unless this is se
             :desc "org-roam-insert" "i" #'org-roam-insert
             :desc "org-roam-toggle-buffer-display" "b" #'org-roam-buffer-toggle-display
             :desc "org-roam-find-file" "f" #'org-roam-find-file
-            :desc "org-roam-capture" "c" #'org-roam-capture)
+            :desc "org-roam-capture" "c" #'org-roam-capture
+            :desc "org-super-agenda" "A" #'org-agenda-show-superdaily)
         (map! :leader
               :desc "org-refile" "r" #'org-refile)
 
@@ -321,6 +341,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 * Super agenda
 #+BEGIN_SRC emacs-lisp
 (setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s)))
+(setq org-agenda-hide-tags-regexp (regexp-opt '("project")))
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -375,9 +396,44 @@ org mode seems to ignore my per-headline visibility properties unless this is se
         (:discard (:anything))
                             (:discard (:not (:todo "TODO"))))))))
            )
+          ("t" "TODO Super view"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (:todo "[ ]"))
+                            (:name "DOING"
+                                   :todo "DOING")
+                            (:name "Home"
+                                   :and (
+                                         :tag "home"
+                                         :not (:tag "someday")
+
+                                         )
+                            )
+                            (:name "Work"
+                                   :and (
+                                         :tag "work"
+                                         :not (:tag "someday")
+
+                                         )
+                            )
+                            (:name "Someday"
+                                   :tag "someday"
+                                   )
+                            (:name "Other"
+                                   :anything)
+        (:discard (:anything))
+                            (:discard (:not (:todo "TODO"))))))))
+           )
           ))
   :config
   (org-super-agenda-mode))
+
+(defun org-agenda-show-superdaily (&optional arg)
+  (interactive "P")
+  (org-agenda arg "c"))
+
 #+END_SRC
 
 * Oneoff
@@ -476,4 +532,36 @@ tasks."
 
 (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
 (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
+#+END_SRC
+** copy done entries to todays journal
+
+#+BEGIN_SRC emacs-lisp
+(defun my/org-roam-copy-todo-to-today ()
+  (interactive)
+  (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+        (org-roam-dailies-capture-templates
+      '(("t" "tasks" entry
+         #'org-roam-capture--get-point
+         "%?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "%[templates/daily.tmpl]"
+         :olp ("Log")
+         )))
+        (org-after-refile-insert-hook #'save-buffer)
+        today-file
+        pos)
+    (save-window-excursion
+      (org-roam-dailies--capture (current-time) t)
+      (setq today-file (buffer-file-name))
+      (setq pos (point)))
+
+    ;; Only refile if the target file is different than the current file
+    (unless (equal (file-truename today-file)
+                   (file-truename (buffer-file-name)))
+      (org-refile nil nil (list "Agenda" today-file nil pos)))))
+
+(add-to-list 'org-after-todo-state-change-hook
+             (lambda ()
+               (when (equal org-state "DONE")
+                 (my/org-roam-copy-todo-to-today))))
 #+END_SRC
