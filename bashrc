@@ -152,17 +152,23 @@ function vpnconnect() {
 }
 
 function bwvpnconnect() {
-    echo $(bw get username "$1.vpn") > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
-    VPNPASS=$(bw get password "$1.vpn") 
-    VPNOTP=$(bw get totp $1)
-    echo "$VPNPASS$VPNOTP" >> $HOME/vpn/$1.tblk/Contents/Resources/creds.txt
-    docker start $1 && sleep 1 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
+    SERVER=$1
+    echo $(bw get username "$SERVER.vpn") > $HOME/vpn/$SERVER.tblk/Contents/Resources/creds.txt
+    VPNPASS=$(bw get password "$SERVER.vpn") 
+    VPNOTP=$(bw get totp $SERVER)
+    echo "$VPNPASS$VPNOTP" >> $HOME/vpn/$SERVER.tblk/Contents/Resources/creds.txt
+    docker start $SERVER && sleep 1 && rm $HOME/vpn/$SERVER.tblk/Contents/Resources/creds.txt && echo "connected to $SERVER"
 }
 
 function sfvpn() {
-    local bw_session=$(bw unlock --raw)
+    if [ -z "${BW_SESSION}" ]; then
+        local bw_session=$(bw unlock --raw)
+    else
+        local bw_session=$BW_SESSION
+    fi
+
     BW_SESSION=$bw_session bwvpnconnect mars &
-    BW_SESSION=$bw_session bwvpnconnect saturn 
+    BW_SESSION=$bw_session bwvpnconnect saturn
 }
 
 function vssh() {
