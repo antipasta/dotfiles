@@ -187,7 +187,14 @@ determine the exact padding."
    (org-tag :foreground yellow :bold nil)
    ((org-quote &override) :inherit 'italic :foreground base7 :background org-quote)
    (org-todo :foreground yellow :bold 'inherit)
-   (org-list-dt :foreground yellow))
+   (org-list-dt :foreground yellow)
+
+; joe added
+  ;(org-agenda-dimmed-todo-face :foreground comments)
+  (org-agenda-dimmed-todo-face :inherit 'org-agenda-todo)
+   )
+
+
 
 
   ;; --- extra variables --------------------

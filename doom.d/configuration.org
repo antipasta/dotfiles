@@ -56,6 +56,7 @@
 (setq org-roam-buffer-width 0.15)
 
 (setq org-agenda-window-setup 'other-window)
+(setq org-capture-use-agenda-date t)
 ; maximize on startup
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (setq org-roam-buffer-window-parameters '(
@@ -132,8 +133,11 @@
 ** Capture
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
-    '(("t" "Todo" entry (file "~/org/roam/synced/inbox.org")
+    '(
+      ("t" "Todo" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\n/created/ %U" :empty-lines 0)
+      ("d" "deadline" entry (file "~/org/roam/synced/inbox.org")
+       "* TODO %?\nDEADLINE: %u" :empty-lines 0)
       ("T" "Todo with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\n   %c" :empty-lines 0)
       ("n" "Note" entry (file "~/org/roam/synced/inbox.org")
@@ -205,6 +209,14 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 
 ; this key is mapped by evil mode to temporarily enter an emacs mode for key shortcuts, unset that..
 (define-key evil-motion-state-map "\\" 'org-agenda-filter-by-tag)
+;(define-key evil-org-agenda-mode-map "c" 'air-org-agenda-capture)
+(map! :after org-agenda
+      :map org-agenda-mode-map
+;      :localleader
+      :leader
+      :desc "capture" "c" #'air-org-agenda-capture
+      :desc "Filter" "f" #'org-agenda-filter
+      )
 
 
 ; custom todo states
@@ -375,7 +387,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
                           '((:log t)
-                            (:discard (:scheduled today :deadline today))
+                            (:discard (:scheduled today :deadline today :todo "[ ]"))
                             (:name "Doing"
                                    :todo "DOING")
                             (:name "Next"
@@ -406,6 +418,10 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                             (:discard (:todo "[ ]"))
                             (:name "DOING"
                                    :todo "DOING")
+                            (:name "Today"
+                                         :scheduled today
+                                         :deadline today
+                            )
                             (:name "Home"
                                    :and (
                                          :tag "home"
@@ -432,9 +448,18 @@ org mode seems to ignore my per-headline visibility properties unless this is se
   :config
   (org-super-agenda-mode))
 
-(defun org-agenda-show-superdaily (&optional arg)
+(defun air-org-agenda-capture (&optional vanilla)
+  "Capture a task in agenda mode, using the date at point.
+
+If VANILLA is non-nil, run the standard `org-capture'."
   (interactive "P")
-  (org-agenda arg "c"))
+  (if vanilla
+      (org-capture)
+    (let ((org-overriding-default-time (org-get-cursor-date)))
+      (org-capture nil "d"))))
+
+
+
 
 #+END_SRC
 
