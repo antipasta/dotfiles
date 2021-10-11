@@ -126,8 +126,14 @@
                 (buffer-list))))
 
 (setq org-refile-targets '(
-                           (+org/opened-buffer-files :maxlevel . 3)
-                           (org-agenda-files :maxlevel . 4)
+                            ("~/org/roam/20210402090030-links.org" :level . 0 )
+                            ("~/org/roam/20210417225225-books.org" :level . 0)
+                            ("~/org/roam/20210331094749-emacs_setup.org" :maxlevel . 1)
+                            ("~/org/roam/synced/20210403104611-tasks.org" :maxlevel . 3)
+                            ("~/org/roam/20210403193652-cooking.org" :maxlevel . 2)
+                            ("~/org/roam/20210404183305-restaurants.org" :level . 1)
+                           (+org/opened-buffer-files :maxlevel . 1)
+                           (org-agenda-files :maxlevel . 1)
                            ))
 #+END_SRC
 ** Capture
@@ -215,7 +221,8 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 ;      :localleader
       :leader
       :desc "capture" "c" #'air-org-agenda-capture
-      :desc "Filter" "f" #'org-agenda-filter
+      :desc "todo" "t" #'air-org-agenda-todo
+      :desc "capture deadline" "d" #'air-org-agenda-capture
       )
 
 
@@ -223,7 +230,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 (after! org
     (setq org-todo-keywords
         '(
-          (sequence "TODO(t)" "NEXT(n)" "DOING(s)" "WAITING(w)" "PROJ(p)" "|" "DONE(d)")
+          (sequence "TODO(t)" "NEXT(n)" "DOING(o)" "WAITING(w)" "PROJ(p)" "|" "DONE(d)")
           (sequence "[ ]" "|" "[X]")
           )
         org-todo-keyword-faces
@@ -249,7 +256,8 @@ org mode seems to ignore my per-headline visibility properties unless this is se
             :desc "org-roam-capture" "c" #'org-roam-capture
             :desc "org-super-agenda" "A" #'org-agenda-show-superdaily)
         (map! :leader
-              :desc "org-refile" "r" #'org-refile)
+              :desc "org-refile" "r" #'org-refile
+              :desc "org-agenda" "a" #'org-agenda)
 
         )
 #+END_SRC
@@ -352,7 +360,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 
 * Super agenda
 #+BEGIN_SRC emacs-lisp
-(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s)))
+(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s) ("ma" . ?m) ("link" . ?l)))
 
 ; dont need to show project tag
 (setq org-agenda-hide-tags-regexp (regexp-opt '("project")))
@@ -387,12 +395,15 @@ org mode seems to ignore my per-headline visibility properties unless this is se
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
                           '((:log t)
-                            (:discard (:scheduled today :deadline today :todo "[ ]"))
+                            (:discard (:scheduled today  :todo "[ ]"))
                             (:name "Doing"
                                    :todo "DOING")
                             (:name "Next"
                                    :todo "NEXT"
                                    :order 1)
+                            (:name "Waiting"
+                                   :todo "WAITING"
+                                   :order 10)
                             (:name "Scheduled Soon"
                                    :scheduled future
                                    :order 8)
@@ -403,9 +414,6 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                                    :order 7)
                             (:name "Inbox"
                                    :file-path "synced/inbox\\.org")
-                            (:name "Waiting"
-                                   :todo "WAITING"
-                                   :order 10)
          (:discard (:deadline future :deadline today :deadline past :scheduled future :scheduled today :scheduled past))
         (:discard (:anything))
                             (:discard (:not (:todo "TODO"))))))))
@@ -421,6 +429,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                             (:name "Today"
                                          :scheduled today
                                          :deadline today
+                                         :deadline past
                             )
                             (:name "Home"
                                    :and (
