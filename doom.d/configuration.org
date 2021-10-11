@@ -219,13 +219,11 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 
 ; this key is mapped by evil mode to temporarily enter an emacs mode for key shortcuts, unset that..
 (define-key evil-motion-state-map "\\" 'org-agenda-filter-by-tag)
-;(define-key evil-org-agenda-mode-map "c" 'air-org-agenda-capture)
 (map! :after org-agenda
       :map org-agenda-mode-map
 ;      :localleader
       :leader
-      :desc "capture" "c" #'air-org-agenda-capture
-      :desc "todo" "t" #'air-org-agenda-todo
+      :desc "todo" "t" #'(lambda () (interactive) (org-capture nil "t"))
       :desc "capture deadline" "d" #'air-org-agenda-capture
       )
 
@@ -460,6 +458,8 @@ org mode seems to ignore my per-headline visibility properties unless this is se
           ))
   :config
   (org-super-agenda-mode))
+
+
 
 (defun air-org-agenda-capture (&optional vanilla)
   "Capture a task in agenda mode, using the date at point.
