@@ -103,6 +103,10 @@
 
 ** Directory/Files
 #+BEGIN_SRC emacs-lisp
+
+;; dont auto-open backlink buffer
+(setq +org-roam-open-buffer-on-find-file nil)
+
 (setq org-directory "~/org/")
 (setq org-roam-directory "~/org/roam/")
 (setq org-roam-dailies-directory "daily/")
@@ -502,6 +506,14 @@ See also `org-save-all-org-buffers'"
           (gtd-save-org-buffers)))
 
 
+(defun clip-file ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      (file-name-directory default-directory)
+                    (buffer-file-name))))
+    (when filename
+      (x-select-text filename))))
 
 #+END_SRC
 ** testing auto add todo org files to agenda
