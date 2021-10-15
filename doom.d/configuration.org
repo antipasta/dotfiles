@@ -53,7 +53,7 @@
 (add-hook 'text-mode-hook (lambda () (lines-on)))
 (add-hook 'org-mode-hook (lambda () (lines-off)))
 
-(setq org-roam-buffer-width 0.15)
+;(setq org-roam-buffer-width 0.15)
 
 (setq org-agenda-window-setup 'other-window)
 (setq org-capture-use-agenda-date t)
@@ -148,6 +148,8 @@
        "* TODO %?\n/created/ %U" :empty-lines 0)
       ("d" "deadline" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\nDEADLINE: %u" :empty-lines 0)
+      ("D" "tomorrow" entry (file "~/org/roam/synced/inbox.org")
+       "* TODO %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+1d\"))" :empty-lines 0)
       ("T" "Todo with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\n   %c" :empty-lines 0)
       ("n" "Note" entry (file "~/org/roam/synced/inbox.org")
@@ -178,13 +180,13 @@ org mode seems to ignore my per-headline visibility properties unless this is se
   (+workspace/rename "today")
   (org-roam-dailies-find-today)
   (save-buffer)
-;  (org-agenda-file-to-front)
-  (split-window-vertically)
-  (other-window 1)
-  (org-roam-dailies-find-previous-note 1)
+  ;(split-window-vertically)
+  ;(other-window 1)
+  ;(org-roam-dailies-find-previous-note 1)
   (goto-line 5)
-  (fit-window-to-buffer)
-  (previous-window-any-frame))
+  ;(fit-window-to-buffer)
+  ;(previous-window-any-frame)
+  )
 
 
 
@@ -225,6 +227,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
       :leader
       :desc "todo" "t" #'(lambda () (interactive) (org-capture nil "t"))
       :desc "capture deadline" "d" #'air-org-agenda-capture
+      :desc "tomorrow" "D" #'(lambda () (interactive) (org-capture nil "D"))
       )
 
 
@@ -391,6 +394,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                                   :order 1)
                             (:name "Upcoming Deadlines"
                                    :deadline future
+
                                    :order 100)
                            ))
                         ))
@@ -403,6 +407,9 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                             (:name "Next"
                                    :todo "NEXT"
                                    :order 1)
+                            (:name "Highlights"
+                                   :priority "B"
+                                   :order 2)
                             (:name "Waiting"
                                    :todo "WAITING"
                                    :order 10)
@@ -415,6 +422,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                                    :deadline past
                                    :order 7)
                             (:name "Inbox"
+                                   :order 9
                                    :file-path "synced/inbox\\.org")
          (:discard (:deadline future :deadline today :deadline past :scheduled future :scheduled today :scheduled past))
         (:discard (:anything))
@@ -425,15 +433,31 @@ org mode seems to ignore my per-headline visibility properties unless this is se
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
                           '((:log t)
-                            (:discard (:todo "[ ]"))
+                            (:discard (
+                                       :todo "[ ]"
+                                       ))
                             (:name "DOING"
-                                   :todo "DOING")
+                                   :todo "DOING"
+                                   :order 1
+                                   )
+                            (:name "Next"
+                                   :todo "NEXT"
+                                   :order 2)
+                            (:name "Highlights"
+                                   :priority "B"
+                                   :order 3)
                             (:name "Today"
+;                            :auto-category t
                                          :scheduled today
                                          :deadline today
                                          :deadline past
+                                         :order 4
                             )
+                            (:name "Scheduled Soon"
+                                   :scheduled future
+                                   :order 10)
                             (:name "Home"
+                             :order 5
                                    :and (
                                          :tag "home"
                                          :not (:tag "someday")
@@ -441,6 +465,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                                          )
                             )
                             (:name "Work"
+                             :order 6
                                    :and (
                                          :tag "work"
                                          :not (:tag "someday")
@@ -449,9 +474,47 @@ org mode seems to ignore my per-headline visibility properties unless this is se
                             )
                             (:name "Someday"
                                    :tag "someday"
+                                :order 7
                                    )
                             (:name "Other"
+                             :order 8
                                    :anything)
+        (:discard (:anything))
+                            (:discard (:not (:todo "TODO"))))))))
+           )
+          ("T" "reworked TODO Super view"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (
+                                       :todo "[ ]"
+                                       :scheduled future
+                                       ))
+                            (:name "DOING"
+                                   :todo "DOING"
+                                   :order 1
+                                   )
+                            (:name "Today"
+;                            :auto-category t
+                             :order 2
+                                         :scheduled today
+                                         :deadline today
+                                         :deadline past
+                            )
+                            (:name "Someday"
+                                   :tag "someday"
+                                   :order 100
+                                   )
+        (:discard (:anything))
+                            (:discard (:not (:todo "TODO")))))))
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (:todo "[ ]" :todo "DOING" :tag "someday"))
+                            (:auto-category t
+                             :order 3
+                             )
         (:discard (:anything))
                             (:discard (:not (:todo "TODO"))))))))
            )
