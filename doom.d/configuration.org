@@ -150,6 +150,10 @@
        "* TODO %?\nDEADLINE: %u" :empty-lines 0)
       ("D" "tomorrow" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\nDEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+1d\"))" :empty-lines 0)
+       ("w" "Work" entry (file+olp "~/org/roam/synced/20210403104611-tasks.org" "Tasks" "Work")
+       "* TODO %?\n/created/ %U" :empty-lines 0)
+       ("h" "Home" entry (file+olp "~/org/roam/synced/20210403104611-tasks.org" "Tasks" "Home")
+       "* TODO %?\n/created/ %U" :empty-lines 0)
       ("T" "Todo with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* TODO %?\n   %c" :empty-lines 0)
       ("n" "Note" entry (file "~/org/roam/synced/inbox.org")
@@ -223,8 +227,8 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 (define-key evil-motion-state-map "\\" 'org-agenda-filter-by-tag)
 (map! :after org-agenda
       :map org-agenda-mode-map
-;      :localleader
-      :leader
+      :localleader
+      ;:leader
       :desc "todo" "t" #'(lambda () (interactive) (org-capture nil "t"))
       :desc "capture deadline" "d" #'air-org-agenda-capture
       :desc "tomorrow" "D" #'(lambda () (interactive) (org-capture nil "D"))

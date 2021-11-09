@@ -58,12 +58,9 @@ pie () {
 export PYTHONPATH=~/python/
 
 
-alias sfreversion='perl-reversion --bump lib/SocialFlow/Web.pm;git add lib/SocialFlow/Web.pm;git commit -m "Bumping sf-web version"'
 alias sfcpanm='HTTP_PROXY=http://localhost:3128 cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
-alias bump='perl-reversion --bump '
 alias vi='vim -p'
 alias lessr='less -R'
-alias shadowpaste='nopaste -s Shadowcat '
 alias netstat='netstat --wide'
 
 if command -v ag >/dev/null 2>&1; then
