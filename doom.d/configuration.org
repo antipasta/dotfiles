@@ -680,3 +680,24 @@ tasks."
                (when (equal org-state "DONE")
                  (my/org-roam-copy-todo-to-today))))
 #+END_SRC
+* TEMPORARY
+org-capture doesnt start properly after opening org-agenda
+[[https://github.com/hlissner/doom-emacs/issues/5714][more info]]
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (defadvice! dan/+org--restart-mode-h-careful-restart (fn &rest args)
+    :around #'+org--restart-mode-h
+    (let ((old-org-capture-current-plist (and (bound-and-true-p org-capture-mode)
+                                              (bound-and-true-p org-capture-current-plist))))
+      (apply fn args)
+      (when old-org-capture-current-plist
+        (setq-local org-capture-current-plist old-org-capture-current-plist)
+        (org-capture-mode +1)))))
+
+#+END_SRC
+
+org-cliplink fails frequently for https sites, switch to curl
+#+BEGIN_SRC emacs-lisp
+    (setq org-cliplink-transport-implementation 'curl)
+
+#+END_SRC
