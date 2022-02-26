@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! org-super-agenda)
+(package! helm-org-rifle)
