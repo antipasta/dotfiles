@@ -2,6 +2,7 @@ Host *.mars.sfsrv.net
   User appuser
   ConnectTimeout 30
   ProxyCommand docker exec -i mars nc -q0 %h %p 2>/dev/null
+  #ProxyCommand docker exec -i mars nc -q0 %h %p 2>/dev/null
   #ProxyCommand ~/dotfiles/script/vpnnc.sh mars %h %p 
   StrictHostKeyChecking false
   KbdInteractiveAuthentication false

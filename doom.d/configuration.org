@@ -5,7 +5,7 @@
 * Theme
 #+BEGIN_SRC emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
+;; are the three important  ones:
 ;;
 ;; + `doom-font'
 ;; + `doom-variable-pitch-font'
@@ -239,7 +239,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 (after! org
     (setq org-todo-keywords
         '(
-          (sequence "TODO(t)" "NEXT(n)" "DOING(o)" "WAITING(w)" "PROJ(p)" "|" "DONE(d)")
+          (sequence "TODO(t)" "NEXT(n)" "DOING(o)" "WAITING(w)" "PROJ(p)" "HOLD(h)" "|" "DONE(d)")
           (sequence "[ ]" "|" "[X]")
           )
         org-todo-keyword-faces
@@ -287,6 +287,103 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 
 
 
+** Search headlines
+#+BEGIN_SRC emacs-lisp
+(defun ivy-org-jump-to-agenda-heading ()
+  "Jump to a heading in an agenda file."
+  (interactive)
+  (let ((headlines '()))
+    ;; these files should be open already since they are agenda files.
+    (cl-loop for file in (org-agenda-files) do
+	  (with-current-buffer (find-file-noselect file)
+	    (save-excursion
+	      (goto-char (point-min))
+	      (while (re-search-forward org-heading-regexp nil t)
+		(cl-pushnew (list
+			     (format "%-80s (%s)"
+				     (match-string 0)
+				     (file-name-nondirectory file))
+			     :file file
+			     :position (match-beginning 0))
+			    headlines)))))
+    (ivy-read "Headline: "
+	      (reverse headlines)
+	      :action (lambda (candidate)
+			(org-mark-ring-push)
+			(find-file (plist-get (cdr candidate) :file))
+			(goto-char (plist-get (cdr candidate) :position))
+			(outline-show-entry)))))
+
+
+                        (defun ivy-org-jump-to-heading-in-files (files &optional fontify)
+  "Jump to org heading in FILES.
+Optional FONTIFY colors the headlines. It might slow things down
+a lot with large numbers of org-files or long org-files. This
+function does not open the files."
+  (let ((headlines '()))
+    (cl-loop for file in files do
+	  (when (file-exists-p file)
+	    (with-temp-buffer
+	      (insert-file-contents file)
+	      (when fontify
+		(org-mode)
+		(font-lock-ensure))
+	      (goto-char (point-min))
+	      (while (re-search-forward org-heading-regexp nil t)
+		(cl-pushnew (list
+			     (format "%-80s (%s)"
+				     (match-string 0)
+				     (file-name-nondirectory file))
+			     :file file
+			     :position (match-beginning 0))
+			    headlines)))))
+    (ivy-read "Headline: "
+	      (reverse headlines)
+	      :action (lambda (candidate)
+			(org-mark-ring-push)
+			(find-file (plist-get (cdr candidate) :file))
+			(goto-char (plist-get (cdr candidate) :position))
+			(outline-show-entry)))))
+
+(defun ivy-org-jump-to-heading-in-directory (&optional recursive)
+  "Jump to heading in an org file in the current directory.
+Use a prefix arg to make it RECURSIVE.
+Use a double prefix to make it recursive and fontified."
+  (interactive "P")
+  (let ((fontify nil))
+    (when (equal recursive '(16))
+      (setq fontify t))
+    (ivy-org-jump-to-heading-in-files
+     (f-entries "."
+		(lambda (f)
+		  (and
+		   (f-ext? f "org")
+		   (not (s-contains? "#" f))))
+		recursive)
+     fontify)))
+
+
+(defun ivy-org-jump-to-project-headline (&optional fontify)
+  "Jump to a headline in an org-file in the current project.
+The project is defined by projectile. Use a prefix arg FONTIFY
+for colored headlines."
+  (interactive "P")
+  (ivy-org-jump-to-heading-in-files
+   (mapcar
+    (lambda (f) (expand-file-name f (projectile-project-root)))
+    (-filter (lambda (f)
+	       (and
+		(f-ext? f "org")
+		(not (s-contains? "#" f))
+		(not (s-contains? "archive.org" f))
+		(not (s-contains? "1001_albums" f))
+                )
+               )
+	     (projectile-current-project-files)))
+   fontify))
+
+
+#+END_SRC
 
 * Evil mode
 #+BEGIN_SRC emacs-lisp
@@ -522,7 +619,35 @@ org mode seems to ignore my per-headline visibility properties unless this is se
         (:discard (:anything))
                             (:discard (:not (:todo "TODO"))))))))
            )
-          ))
+          ("h" "highlight view"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (
+                                       :todo "[ ]"
+                                       ))
+                            (:name "DOING"
+                                   :todo "DOING"
+                                   :order 1
+                                   )
+                            (:name "Next"
+                                   :todo "NEXT"
+                                   :order 2)
+                            (:name "Highlights"
+                                   :priority "B"
+                                   :order 3)
+                            (:name "Today"
+;                            :auto-category t
+                                         :scheduled today
+                                         :deadline today
+                                         :deadline past
+                                         :order 4
+                            )
+        (:discard (:anything)
+                            )))))
+           )
+          )))
   :config
   (org-super-agenda-mode))
 
@@ -639,7 +764,7 @@ tasks."
 
 (defun vulpea-agenda-files-update (&rest _)
   "Update the value of `org-agenda-files'."
-  (setq org-agenda-files    (append '("~/code/cal2org/calendars/work.org" "~/code/cal2org/calendars/ej.org" "~/code/cal2org/calendars/joeyis.org" )
+  (setq org-agenda-files    (append '("~/code/cal2org/calendars/sf.org" "~/code/cal2org/calendars/piano.org" "~/code/cal2org/calendars/ej.org" "~/code/cal2org/calendars/joeyis.org" )
    (vulpea-project-files))))
 
 (add-hook 'find-file-hook #'vulpea-project-update-tag)
