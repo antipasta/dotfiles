@@ -266,7 +266,9 @@ org mode seems to ignore my per-headline visibility properties unless this is se
             :desc "org-super-agenda" "A" #'org-agenda-show-superdaily)
         (map! :leader
               :desc "org-refile" "r" #'org-refile
-              :desc "org-agenda" "a" #'org-agenda)
+              :desc "org-agenda" "a" #'org-agenda
+              :desc "ox-clip-formatted-copy" "y" #'ox-clip-formatted-copy
+              )
 
         )
 #+END_SRC
