@@ -140,7 +140,7 @@
                            (org-agenda-files :maxlevel . 1)
                            ))
 #+END_SRC
-** Capture
+** Capture templates
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
     '(
