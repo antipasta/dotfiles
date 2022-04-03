@@ -180,8 +180,6 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 (defun my-org-roam-dailies-split-today ()
   "Split today function"
   (interactive)
-  (+workspace/new)
-  (+workspace/rename "today")
   (org-roam-dailies-find-today)
   (save-buffer)
   ;(split-window-vertically)
@@ -283,6 +281,8 @@ org mode seems to ignore my per-headline visibility properties unless this is se
   "#+END_SRC"  "\n")
 
   (define-abbrev org-mode-abbrev-table "blk" "" 'skel-org-block)
+    (add-hook 'text-mode-hook #'abbrev-mode)
+
 #+END_SRC
 
 
@@ -543,7 +543,7 @@ for colored headlines."
                                    :todo "DOING"
                                    :order 1
                                    )
-                            (:name "Next"
+                            (:name "NEXT"
                                    :todo "NEXT"
                                    :order 2)
                             (:name "Highlights"
@@ -633,9 +633,12 @@ for colored headlines."
                                    :todo "DOING"
                                    :order 1
                                    )
-                            (:name "Next"
+                            (:name "NEXT"
                                    :todo "NEXT"
                                    :order 2)
+                            (:name "Blocked"
+                                   :todo "WAITING"
+                                   :order 10)
                             (:name "Highlights"
                                    :priority "B"
                                    :order 3)
@@ -668,6 +671,16 @@ If VANILLA is non-nil, run the standard `org-capture'."
 
 
 
+#+END_SRC
+Enable origami folding in org-super-agenda
+#+BEGIN_SRC emacs-lisp
+(use-package origami
+   :general (:keymaps 'org-super-agenda-header-map
+                      "<tab>" #'origami-toggle-node)
+   :config
+
+   :hook ((org-agenda-mode . origami-mode)
+	  ))
 #+END_SRC
 
 * Oneoff
@@ -828,3 +841,4 @@ org-cliplink fails frequently for https sites, switch to curl
     (setq org-cliplink-transport-implementation 'curl)
 
 #+END_SRC
+
