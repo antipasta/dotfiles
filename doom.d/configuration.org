@@ -468,6 +468,7 @@ for colored headlines."
 
 * Super agenda
 #+BEGIN_SRC emacs-lisp
+
 (setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s) ("ma" . ?m) ("link" . ?l)))
 
 ; dont need to show project tag
@@ -543,19 +544,19 @@ for colored headlines."
                                    :todo "DOING"
                                    :order 1
                                    )
-                            (:name "NEXT"
-                                   :todo "NEXT"
-                                   :order 2)
-                            (:name "Highlights"
-                                   :priority "B"
-                                   :order 3)
-                            (:name "Today"
+                            (:name "TODAY"
 ;                            :auto-category t
                                          :scheduled today
                                          :deadline today
                                          :deadline past
-                                         :order 4
+                                        :order 2
                             )
+                            (:name "NEXT"
+                                   :todo "NEXT"
+                                   :order 3)
+                            (:name "Highlights"
+                                   :priority "B"
+                                   :order 4)
                             (:name "Scheduled Soon"
                                    :scheduled future
                                    :order 10)
@@ -635,20 +636,23 @@ for colored headlines."
                                    )
                             (:name "NEXT"
                                    :todo "NEXT"
-                                   :order 2)
+                                   :order 3)
                             (:name "Blocked"
                                    :todo "WAITING"
                                    :order 10)
                             (:name "Highlights"
                                    :priority "B"
-                                   :order 3)
-                            (:name "Today"
+                                   :order 4)
+                            (:name "TODAY"
 ;                            :auto-category t
                                          :scheduled today
                                          :deadline today
                                          :deadline past
-                                         :order 4
+                                         :order 2
                             )
+                            (:name "Inbox"
+                                   :order 11
+                                   :file-path "synced/inbox\\.org")
         (:discard (:anything)
                             )))))
            )
@@ -674,9 +678,54 @@ If VANILLA is non-nil, run the standard `org-capture'."
 #+END_SRC
 Enable origami folding in org-super-agenda
 #+BEGIN_SRC emacs-lisp
+
+(defun my/origami-recursively-toggle-node (buffer point)
+  "Cycle a fold node between recursively closed, open and
+recursively open depending on its current state. The fold node
+acted upon is searched for forward in BUFFER from POINT. If a
+fold node is found after POINT and before the next line break,
+this will be toggled otherwise the fold node nested deepest at
+POINT will be acted upon.
+This command will only work if bound to a key. For those familiar
+with org-mode heading opening and collapsing, this will feel
+familiar. It's easiest to grasp this just by giving it a go."
+  (interactive (list (current-buffer) (point)))
+  (-when-let (path (origami-search-forward-for-path buffer point))
+    (let ((node (-last-item path)))
+          (cond ((origami-fold-node-recursively-open? node)
+                 (origami-close-node buffer (origami-fold-beg node)))
+                ((origami-fold-node-recursively-closed? node)
+                (origami-open-node-recursively buffer (origami-fold-beg node)))
+                (t (origami-open-node-recursively buffer (origami-fold-beg node)))
+        ))))
+
+
+
+  (defvar ap/org-super-agenda-auto-hide-groups
+    '("Schedule" "Bills" "Priority A items" "Priority B items" "Blocked" "Someday"))
+
+(defun ap/org-super-agenda-origami-fold-default (buffer point)
+    "Fold certain groups by default in Org Super Agenda buffer."
+  (interactive (list (current-buffer) (point)))
+    ;(forward-line 3)
+;    (cl-loop do (origami-forward-toggle-node (current-buffer) (point))
+;             while (origami-forward-fold-same-level (current-buffer) (point)))
+
+    (--each ap/org-super-agenda-auto-hide-groups
+      (goto-char (point-min))
+      (when (re-search-forward (rx-to-string `(seq bol " " ,it)) nil t)
+        (origami-close-node (current-buffer) (point))))
+
+  (goto-line 1)
+                        )
+
+
 (use-package origami
    :general (:keymaps 'org-super-agenda-header-map
-                      "<tab>" #'origami-toggle-node)
+                      "<tab>" #'my/origami-recursively-toggle-node
+                      "<backtab>" #'origami-toggle-all-nodes
+                      "M-<tab>" #'origami-show-only-node
+                      )
    :config
 
    :hook ((org-agenda-mode . origami-mode)
@@ -842,3 +891,17 @@ org-cliplink fails frequently for https sites, switch to curl
 
 #+END_SRC
 
+weird warnings started cropping up
+#+BEGIN_SRC emacs-lisp
+(require 'warnings)
+
+(setq warning-suppress-types (append warning-suppress-types '((org-element-cache))))
+#+END_SRC
+
+* org reveal test
+#+BEGIN_SRC emacs-lisp
+(setq org-reveal-root "file:///Users/joe/misc/reveal.js")
+(require 'ox-reveal)
+
+
+#+END_SRC
