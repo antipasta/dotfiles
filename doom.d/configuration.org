@@ -2,6 +2,7 @@
 #+PROPERTY: header-args :results silent
 #+STARTUP: overview
 
+
 * Theme
 #+BEGIN_SRC emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -237,7 +238,7 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 (after! org
     (setq org-todo-keywords
         '(
-          (sequence "TODO(t)" "NEXT(n)" "DOING(o)" "WAITING(w)" "PROJ(p)" "HOLD(h)" "|" "DONE(d)")
+          (sequence "TODO(t)" "NEXT(n)" "DOING(o)" "WAITING(w)" "PROJ(p)" "HOLD(h@/!)" "|" "DONE(d)")
           (sequence "[ ]" "|" "[X]")
           )
         org-todo-keyword-faces
@@ -249,6 +250,18 @@ org mode seems to ignore my per-headline visibility properties unless this is se
 )
 
 #+END_SRC
+
+log when a todo enters the NEXT state
+#+BEGIN_SRC emacs-lisp
+(defun log-todo-next-creation-date (&rest ignore)
+  "Log NEXT creation time in the property drawer under the key 'ACTIVATED'"
+  (when (and (string= (org-get-todo-state) "NEXT")
+             (not (org-entry-get nil "ACTIVATED")))
+    (org-entry-put nil "ACTIVATED" (format-time-string "[%Y-%m-%d]"))))
+(add-hook 'org-after-todo-state-change-hook #'log-todo-next-creation-date)
+#+END_SRC
+
+
 ** shortcuts
 #+BEGIN_SRC emacs-lisp
 (after! org-roam
@@ -469,7 +482,7 @@ for colored headlines."
 * Super agenda
 #+BEGIN_SRC emacs-lisp
 
-(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s) ("ma" . ?m) ("link" . ?l)))
+(setq org-tag-alist '(("work" . ?w) ("home" . ?h) ("ramona" . ?r) ("buy" . ?b) ("someday" . ?s) ("errand" . ?e) ("link" . ?l)))
 
 ; dont need to show project tag
 (setq org-agenda-hide-tags-regexp (regexp-opt '("project")))
@@ -488,7 +501,7 @@ for colored headlines."
       org-agenda-start-on-weekday nil)
   (setq org-agenda-custom-commands
         '(
-          ("c" "Super view"
+          ("a" "agenda view"
            ((agenda "" ((org-agenda-overriding-header "")
                         (org-super-agenda-groups
                          '(
@@ -506,33 +519,34 @@ for colored headlines."
                          (org-super-agenda-groups
                           '((:log t)
                             (:discard (:scheduled today  :todo "[ ]"))
-                            (:name "Doing"
+                            (:name "DOING"
                                    :todo "DOING")
-                            (:name "Next"
+                            (:name "NEXT"
                                    :todo "NEXT"
                                    :order 1)
                             (:name "Highlights"
                                    :priority "B"
                                    :order 2)
-                            (:name "Waiting"
-                                   :todo "WAITING"
+                            (:name "Blocked"
+                                   :todo ("WAITING" "HOLD")
                                    :order 10)
                             (:name "Scheduled Soon"
                                    :scheduled future
                                    :order 8)
-                            (:name "Journal"
-                                   :file-path "daily/")
                             (:name "Overdue"
                                    :deadline past
                                    :order 7)
                             (:name "Inbox"
-                                   :order 9
+                                   :order 11
                                    :file-path "synced/inbox\\.org")
          (:discard (:deadline future :deadline today :deadline past :scheduled future :scheduled today :scheduled past))
         (:discard (:anything))
-                            (:discard (:not (:todo "TODO"))))))))
+                            (:discard (:not (:todo "TODO"))))
+
+
+                        ))))
            )
-          ("t" "TODO Super view"
+          ("h" "highlight view"
            (
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
@@ -544,19 +558,59 @@ for colored headlines."
                                    :todo "DOING"
                                    :order 1
                                    )
+                            (:name "NEXT"
+                                   :todo "NEXT"
+                                   :order 3)
+                            (:name "Blocked"
+                                   :todo ("WAITING" "HOLD")
+                                   :order 10)
+                            (:name "Highlights"
+                                   :priority "B"
+                                   :order 4)
                             (:name "TODAY"
 ;                            :auto-category t
                                          :scheduled today
                                          :deadline today
                                          :deadline past
-                                        :order 2
+                                         :order 2
+                            )
+                            (:name "Inbox"
+                                   :order 11
+                                   :file-path "synced/inbox\\.org")
+        (:discard (:anything)
+                            ))
+                          )))
+           )
+          )
+          ("t" "All tasks"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (
+                                       :todo "[ ]"
+                                       ))
+                            (:name "PROJECTS"
+                                   :todo "PROJ"
+                                   :order 1
+                                   )
+                            (:name "DOING"
+                                   :todo "DOING"
+                                   :order 2
+                                   )
+                            (:name "TODAY"
+;                            :auto-category t
+                                         :scheduled today
+                                         :deadline today
+                                         :deadline past
+                                        :order 3
                             )
                             (:name "NEXT"
                                    :todo "NEXT"
-                                   :order 3)
+                                   :order 4)
                             (:name "Highlights"
                                    :priority "B"
-                                   :order 4)
+                                   :order 5)
                             (:name "Scheduled Soon"
                                    :scheduled future
                                    :order 10)
@@ -580,83 +634,81 @@ for colored headlines."
                                    :tag "someday"
                                 :order 7
                                    )
-                            (:name "Other"
+                            (:name "Grouped by parent"
+                             :auto-parent t
                              :order 8
+                                   )
+                            (:name "Other"
+                             :order 9
                                    :anything)
         (:discard (:anything))
                             (:discard (:not (:todo "TODO"))))))))
            )
-          ("T" "reworked TODO Super view"
+          ("p" "project view"
            (
             (alltodo "" ((org-agenda-overriding-header "")
-                         (org-super-agenda-groups
-                          '((:log t)
-                            (:discard (
-                                       :todo "[ ]"
-                                       :scheduled future
-                                       ))
-                            (:name "DOING"
-                                   :todo "DOING"
-                                   :order 1
-                                   )
-                            (:name "Today"
-;                            :auto-category t
-                             :order 2
-                                         :scheduled today
-                                         :deadline today
-                                         :deadline past
-                            )
-                            (:name "Someday"
-                                   :tag "someday"
-                                   :order 100
-                                   )
-        (:discard (:anything))
-                            (:discard (:not (:todo "TODO")))))))
-            (alltodo "" ((org-agenda-overriding-header "")
-                         (org-super-agenda-groups
-                          '((:log t)
-                            (:discard (:todo "[ ]" :todo "DOING" :tag "someday"))
-                            (:auto-category t
-                             :order 3
-                             )
-        (:discard (:anything))
-                            (:discard (:not (:todo "TODO"))))))))
-           )
-          ("h" "highlight view"
-           (
-            (alltodo "" ((org-agenda-overriding-header "")
+                        (org-agenda-prefix-format " %i ")
                          (org-super-agenda-groups
                           '((:log t)
                             (:discard (
                                        :todo "[ ]"
                                        ))
-                            (:name "DOING"
-                                   :todo "DOING"
+                            (:name "PROJECTS"
+                                   :todo "PROJ"
                                    :order 1
                                    )
-                            (:name "NEXT"
-                                   :todo "NEXT"
-                                   :order 3)
-                            (:name "Blocked"
-                                   :todo "WAITING"
-                                   :order 10)
-                            (:name "Highlights"
-                                   :priority "B"
-                                   :order 4)
-                            (:name "TODAY"
-;                            :auto-category t
-                                         :scheduled today
-                                         :deadline today
-                                         :deadline past
-                                         :order 2
-                            )
-                            (:name "Inbox"
-                                   :order 11
-                                   :file-path "synced/inbox\\.org")
+                                (:name "Other"
+                             :auto-group t
+                             :order 8
+                                   :anything)
         (:discard (:anything)
                             )))))
            )
-          )))
+          )
+          ("c" "context view"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                        (org-agenda-prefix-format " %i ")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (
+                                       :todo "[ ]"
+                                       ))
+                            (:name "PROJECTS"
+                                   :todo "PROJ"
+                                   :order 1
+                                   )
+                            (:name "Home"
+                             :order 5
+                                   :and (
+                                         :tag "home"
+                                         :not (:tag "someday")
+
+                                         )
+                            )
+                            (:name "Work"
+                             :order 6
+                                   :and (
+                                         :tag "work"
+                                         :not (:tag "someday")
+
+                                         )
+                            )
+                            (:name "Someday"
+                                   :tag "someday"
+                                :order 7
+                                   )
+                                (:name "Other tags"
+                             :order 8
+                             :auto-tags t)
+                                (:name "No Context"
+                             :order 8
+                                   :anything)
+        (:discard (:anything)
+                            )))))
+           )
+          )
+          ))
   :config
   (org-super-agenda-mode))
 
@@ -731,6 +783,8 @@ familiar. It's easiest to grasp this just by giving it a go."
    :hook ((org-agenda-mode . origami-mode)
 	  ))
 #+END_SRC
+
+
 
 * Oneoff
 #+BEGIN_SRC emacs-lisp
@@ -898,10 +952,36 @@ weird warnings started cropping up
 (setq warning-suppress-types (append warning-suppress-types '((org-element-cache))))
 #+END_SRC
 
+
 * org reveal test
 #+BEGIN_SRC emacs-lisp
 (setq org-reveal-root "file:///Users/joe/misc/reveal.js")
 (require 'ox-reveal)
 
+
+#+END_SRC
+* org TOC
+#+BEGIN_SRC emacs-lisp
+(defun org-toc ()
+  (interactive)
+  (let ((files (f-entries "." (lambda (f) (f-ext? f "org")) t))
+    (headlines '())
+    choice)
+    (loop for file in files do
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (while (re-search-forward org-heading-regexp nil t)
+          (cl-pushnew (list
+               (format "%-80s (%s)"
+                   (match-string 0)
+                   (file-name-nondirectory file))
+               :file file
+               :position (match-beginning 0))
+              headlines))))
+    (setq choice
+      (completing-read "Headline: " (reverse headlines)))
+    (find-file (plist-get (cdr (assoc choice headlines)) :file))
+    (goto-char (plist-get (cdr (assoc choice headlines)) :position))))
 
 #+END_SRC
