@@ -161,6 +161,8 @@
        "* %?" :empty-lines 0)
       ("N" "Note with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* %?\n   %c" :empty-lines 0)
+      ("p" "Project" entry (file "~/org/roam/20230405103143-projects.org")
+         "* PROJ %^{Project Name} [/]\n:PROPERTIES:\n:agenda-group: %\\1\n:category: %^{Category}\n:Created: %U\n:END:\n")
        ("l" "Link" entry (file+headline "~/org/roam/20210402090030-links.org" "Personal")
 	   "* [[%c][%?]]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 0)
     ))
