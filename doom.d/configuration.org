@@ -162,7 +162,7 @@
       ("N" "Note with Clipboard" entry (file "~/org/roam/synced/inbox.org")
        "* %?\n   %c" :empty-lines 0)
       ("p" "Project" entry (file "~/org/roam/20230405103143-projects.org")
-         "* PROJ %^{Project Name} [/]\n:PROPERTIES:\n:agenda-group: %\\1\n:category: %^{Category}\n:Created: %U\n:END:\n")
+         "* PROJ %^{Project Name} [/]\n:PROPERTIES:\n:agenda-group: %\\1\n:category: %^{Short Name}\n:Created: %U\n:END:\n")
        ("l" "Link" entry (file+headline "~/org/roam/20210402090030-links.org" "Personal")
 	   "* [[%c][%?]]\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 0)
     ))
@@ -584,7 +584,7 @@ for colored headlines."
                           )))
            )
           )
-          ("t" "All tasks"
+          ("t" "All tasks minus someday"
            (
             (alltodo "" ((org-agenda-overriding-header "")
                          (org-super-agenda-groups
@@ -616,6 +616,7 @@ for colored headlines."
                             (:name "Scheduled Soon"
                                    :scheduled future
                                    :order 10)
+                            (:discard (:tag "someday"))
                             (:name "Home"
                              :order 5
                                    :and (
@@ -643,6 +644,21 @@ for colored headlines."
                             (:name "Other"
                              :order 9
                                    :anything)
+        (:discard (:anything))
+                            (:discard (:not (:todo "TODO"))))))))
+           )
+          ("s" "Someday view"
+           (
+            (alltodo "" ((org-agenda-overriding-header "")
+                         (org-super-agenda-groups
+                          '((:log t)
+                            (:discard (
+                                       :todo "[ ]"
+                                       ))
+                            (:name "Someday"
+                                   :tag "someday"
+                                :order 7
+                                   )
         (:discard (:anything))
                             (:discard (:not (:todo "TODO"))))))))
            )
