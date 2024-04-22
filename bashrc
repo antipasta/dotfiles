@@ -34,9 +34,6 @@ export EDITOR=vim
 export GOPATH=$HOME/code/go
 export PATH=$HOME/bin:$HOME/local/bin:$HOME/bin/fzf/bin/:$HOME/gobin/go/bin/:$HOME/go/bin/:/usr/local/go/bin:$HOME/perl5/bin:/usr/sbin/:$GOPATH/bin:$HOME/Library/Python/3.8/bin:$HOME/bin/vim/vim-8.0.1481/bin/bin/:$HOME/dotfiles/bin/:$HOME/Applications/:/opt/homebrew/bin:$HOME/Library/Python/3.8/bin:$PATH 
 [ -f $HOME/perl5/lib/perl5/Devel/Local.pm ] && source `which devel-local.sh`
-function github() {
-    git clone git@github.com:SocialFlowDev/$1.git
-}
 
 git-extract-dir() {
     DIR=$1
@@ -58,8 +55,6 @@ pie () {
 export PYTHONPATH=~/python/
 
 
-alias sfcpanm='HTTP_PROXY=http://localhost:3128 cpanm --mirror http://cpan-mirror.dev.saturn.sfsrv.net:25123 --mirror-only' 
-alias sfcurl='http_proxy=http://localhost:3128 curl ' 
 alias vi='vim -p'
 alias lessr='less -R'
 alias netstat='netstat --wide'
@@ -138,65 +133,11 @@ rmqq() {
     fi
     qq
 }
-function vpnotp() {
-    echo -n 'Enter keepass pw: ';
-    printf "\033]52;c;$(echo $(KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a Password | tr -d '\n')  | base64)\a"
-}
-
-function vpnconnect() {
-    echo -n 'Enter keepass pw: ';
-    KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && sleep 5 && rm $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && echo "connected to $1"
-    # KeePassXC.AppImage cli show /mnt/chromeos/GoogleDrive/MyDrive/keepass/keepass2.kdbx $1 -q -t -a UserName -a Password | sed -z "s|[\n\r]||2g" > $HOME/vpn/$1.tblk/Contents/Resources/creds.txt && docker start $1 && docker logs -f $1 && echo "connected to $1"
-}
-
-function bwvpnconnect() {
-    SERVER=$1
-    echo $(bw get username "$SERVER.vpn") > $HOME/vpn/$SERVER.tblk/Contents/Resources/creds.txt
-    VPNPASS=$(bw get password "$SERVER.vpn") 
-    VPNOTP=$(bw get totp $SERVER)
-    echo "$VPNPASS$VPNOTP" >> $HOME/vpn/$SERVER.tblk/Contents/Resources/creds.txt
-    docker start $SERVER && sleep 1 && rm $HOME/vpn/$SERVER.tblk/Contents/Resources/creds.txt && echo "connected to $SERVER"
-}
-
-function sfvpn() {
-    if [ -z "${BW_SESSION}" ]; then
-        local bw_session=$(bw unlock --raw)
-    else
-        local bw_session=$BW_SESSION
-    fi
-
-    BW_SESSION=$bw_session bwvpnconnect mars &
-    BW_SESSION=$bw_session bwvpnconnect saturn
-}
-
-function vssh() {
-    if [[ $@ == *mars* ]]; then
-        SF_SSH_ENVIRON=mars
-    else
-        SF_SSH_ENVIRON=saturn
-    fi
-#    if [[ $(gpg --card-status ) ]]; then
-#        refresh_gpga
-#    else
-        ssh-add -q ~/.ssh/*.secret
-#    fi
-
-    if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
-        echo "Must connect to $SF_SSH_ENVIRON..."
-        vpnconnect $SF_SSH_ENVIRON
-    fi
-	until ssh $@; do
-        if [[ $(docker ps -q --filter name=$SF_SSH_ENVIRON) = "" ]]; then
-            echo "Must connect to $SF_SSH_ENVIRON..."
-            vpnconnect $SF_SSH_ENVIRON
-        fi
-        echo Attempting SSH...
-        sleep 1
-	done
-}
-
-alias sfssh='vssh -A $(sf-deploy.pl -c $(fdfind --type directory "prod|dev" $HOME/release/sf-deploy-application/application | fzf) --print_host)'
 
 if [[ $(gpg --card-status ) ]]; then
         refresh_gpga
 fi
+
+alias python='python3'
+
+
